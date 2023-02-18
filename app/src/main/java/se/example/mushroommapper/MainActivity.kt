@@ -1,4 +1,4 @@
-package se.example.mushroommapper.View
+package se.example.mushroommapper.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
