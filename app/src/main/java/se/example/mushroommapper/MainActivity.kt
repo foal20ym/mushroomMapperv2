@@ -1,4 +1,4 @@
-package se.example.mushroommapper.view
+package se.example.mushroommapper
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,19 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import se.example.mushroommapper.ui.theme.MushroomMapperTheme
+import se.example.mushroommapper.view.NavNav
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MushroomMapperTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                NavNav()
             }
         }
     }
