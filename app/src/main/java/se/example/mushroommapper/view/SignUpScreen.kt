@@ -19,7 +19,7 @@ fun SignUpScreen() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Hello my frend",
+            text = "Hello my frend, ",
             fontSize = MaterialTheme.typography.h3.fontSize,
             fontWeight = FontWeight.Bold
         )
