@@ -12,14 +12,55 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import se.example.mushroommapper.BottomBarScreen
 import se.example.mushroommapper.navigation.HomeNavGraph
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun HomeScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = { BottomBar(navController = navController) },
+        topBar = { TopBar(navController = navController)}
     ) {
         HomeNavGraph(navController = navController)
     }
+}
+
+@Composable
+fun TopBar(navController: NavHostController) {
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    TopAppBar(
+        title = {
+            Box(modifier = Modifier.fillMaxWidth()){
+                Text(text = "${currentDestination?.route}", modifier = Modifier.align(Alignment.Center))
+            }
+        },
+        navigationIcon = {
+            IconButton(onClick = {}) {
+                Icon(Icons.Filled.ArrowBack, "backIcon")
+            }
+        },
+        actions = {
+            IconButton(onClick = {}) {
+                Icon(Icons.Filled.Phone, "backIcon")
+            }
+        },
+        backgroundColor = MaterialTheme.colors.primary,
+        contentColor = Color.White,
+        elevation = 10.dp
+    )
 }
 
 @Composable
