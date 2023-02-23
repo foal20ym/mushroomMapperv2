@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "373540976214",
+    "project_id": "fir-authentication-be2bb",
+    "storage_bucket": "fir-authentication-be2bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373540976214:android:ded3d86f168eb974b96df7",
+        "android_client_info": {
+          "package_name": "se.example.mushroommapper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373540976214-jhr2pt0rmhrauahdr1i15lugf215o2d0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8Uo36P7GX8HAEw0K84lEfnrNYjJZi7vM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373540976214-jhr2pt0rmhrauahdr1i15lugf215o2d0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
