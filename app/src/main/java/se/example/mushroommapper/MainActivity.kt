@@ -13,8 +13,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import se.example.mushroommapper.ui.theme.MushroomMapperTheme
 
 
+
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import se.example.mushroommapper.navigation.RootNavigationGraph
 
 class MainActivity : ComponentActivity() {

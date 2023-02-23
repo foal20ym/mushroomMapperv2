@@ -1,20 +1,25 @@
 package se.example.mushroommapper.navigation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import se.example.mushroommapper.BottomBarScreen
+import se.example.mushroommapper.view.MapScreen
 import se.example.mushroommapper.view.ScreenContent
+import se.example.mushroommapper.view.SignUpScreen
 
 @Composable
-fun HomeNavGraph(navController: NavHostController) {
+fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = BottomBarScreen.Home.route
+        startDestination = BottomBarScreen.Home.route,
+        modifier = modifier
     ) {
         composable(route = BottomBarScreen.Home.route) {
             ScreenContent(
@@ -25,16 +30,14 @@ fun HomeNavGraph(navController: NavHostController) {
             )
         }
         composable(route = BottomBarScreen.Profile.route) {
-            ScreenContent(
+            /*ScreenContent(
                 name = BottomBarScreen.Profile.route,
                 onClick = { }
-            )
+            )*/
+            SignUpScreen() // Byt ut till ProfileScreen när den är done.
         }
         composable(route = BottomBarScreen.Map.route) {
-            ScreenContent(
-                name = BottomBarScreen.Map.route,
-                onClick = { }
-            )
+            MapScreen()
         }
         composable(route = BottomBarScreen.Settings.route) {
             ScreenContent(
