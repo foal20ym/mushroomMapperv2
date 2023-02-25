@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import se.example.mushroommapper.view.LoginContent
+import se.example.mushroommapper.view.ResetPasswordScreen
 import se.example.mushroommapper.view.ScreenContent
 import se.example.mushroommapper.view.SignUpScreen
 
@@ -31,7 +32,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
             SignUpScreen()
         }
         composable(route = AuthScreen.Forgot.route) {
-            ScreenContent(name = AuthScreen.Forgot.route) {}
+            ResetPasswordScreen()
         }
     }
 }
