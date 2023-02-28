@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "581003433443",
+    "project_id": "mushroommapperdev",
+    "storage_bucket": "mushroommapperdev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581003433443:android:1d1ae8afeb234d07d4fcd6",
+        "android_client_info": {
+          "package_name": "se.example.mushroommapper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "581003433443-pssvglk6k6uguigsf0nsfr7ad88sdq5f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_K2gd1Y2AWUYtFSN3bhAKkc0PShYRp0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "581003433443-pssvglk6k6uguigsf0nsfr7ad88sdq5f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
