@@ -8,9 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import se.example.mushroommapper.BottomBarScreen
-import se.example.mushroommapper.view.MapScreen
-import se.example.mushroommapper.view.ScreenContent
-import se.example.mushroommapper.view.SignUpScreen
+import se.example.mushroommapper.view.*
 
 @Composable
 fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -29,19 +27,17 @@ fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier
             )
         }
         composable(route = BottomBarScreen.Profile.route) {
-            ScreenContent(
-                name = BottomBarScreen.Profile.route,
-                onClick = { }
-            )// Byt ut till ProfileScreen när den är done.
+            ProfileScreen()
         }
         composable(route = BottomBarScreen.Map.route) {
             MapScreen()
         }
         composable(route = BottomBarScreen.Settings.route) {
-            ScreenContent(
+            /*ScreenContent(
                 name = BottomBarScreen.Settings.route,
                 onClick = { }
-            )
+            )*/
+            ImagePicker()
         }
         detailsNavGraph(navController = navController)
     }

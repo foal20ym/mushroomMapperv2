@@ -3,6 +3,7 @@ package se.example.mushroommapper.view
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -10,11 +11,15 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import se.example.mushroommapper.firestore.DataViewModel
+import se.example.mushroommapper.firestore.getDataFromFireStore
 import se.example.mushroommapper.model.Place
 
 
 @Composable
-fun MapScreen() {
+fun MapScreen(
+    dataViewModel: DataViewModel = viewModel()
+) {
     val singapore = LatLng(1.35, 103.87)
 
     val places = listOf(
@@ -22,6 +27,11 @@ fun MapScreen() {
         Place("Singapore2","Nice city",1.39,103.87),
         Place("Singapore3","Nice city",1.41,103.87)
     )
+
+    val getData = dataViewModel.state.value
+    val locationn = LatLng(getData.latitude, getData.longitude)
+    val places2 = getData
+
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(singapore, 10f)
@@ -38,6 +48,5 @@ fun MapScreen() {
                 snippet = place.description,
             )
         }
-
     }
 }
