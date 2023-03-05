@@ -2,7 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature android:name="android.hardware.camera.any"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"/>
+
     <application
+        android:name=".BaseCameraApplication"
         android:allowBackup="true"
         android:name=".ApplicationFirebaseAuth"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -30,7 +36,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${googleMapsApiKey}" />
+            android:value="234254564564678766565" />
 
     </application>
 
