@@ -9,6 +9,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import se.example.mushroommapper.BottomBarScreen
 import se.example.mushroommapper.view.*
+import se.example.mushroommapper.view.CameraScreen
+import se.example.mushroommapper.view.MapScreen
+import se.example.mushroommapper.view.ScreenContent
+import se.example.mushroommapper.view.SignUpScreen
 
 @Composable
 fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -38,6 +42,9 @@ fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier
                 onClick = { }
             )*/
             ImagePicker()
+        }
+        composable("CameraScreen") {
+            CameraScreen(navController = navController)
         }
         detailsNavGraph(navController = navController)
     }
