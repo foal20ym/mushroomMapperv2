@@ -8,6 +8,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import se.example.mushroommapper.data.StorageRepository
 import se.example.mushroommapper.model.Notes
+import se.example.mushroommapper.model.Places
 
 class DetailViewModel(
     private val repository: StorageRepository = StorageRepository()
@@ -52,6 +53,13 @@ class DetailViewModel(
         )
     }
 
+    fun setEditFieldsPlace(place: Places){
+        detailsUiState = detailsUiState.copy(
+            title = place.title,
+            note = place.description
+        )
+    }
+
     fun getNote(noteId: String){
         repository.getNote(
             noteId = noteId,
@@ -61,6 +69,7 @@ class DetailViewModel(
             detailsUiState.selectedNote?.let { it1 -> setEditFields(it1) }
         }
     }
+
 
     fun updateNote(
         noteId: String
@@ -86,6 +95,50 @@ class DetailViewModel(
         detailsUiState = DetailsUiState()
     }
 
+    /*
+       fun addPlace() {
+        if(hasUser){
+            repository.addPlace(
+                userId = user!!.uid,
+                title = detailsUiState.title,
+                description = detailsUiState.note,
+                timestamp = Timestamp.now()
+            ) {
+                detailsUiState = detailsUiState.copy(placeAddedStatus = it)
+            }
+        }
+    }
+    fun getPlace(placeId: String){
+        repository.getPlace(
+            placeId = placeId,
+            onError = {}
+        ) {
+            detailsUiState = detailsUiState.copy(selectedPlace = it)
+            detailsUiState.selectedPlace?.let { it1 -> setEditFieldsPlace(it1) }
+        }
+    }   fun addPlace() {
+        if(hasUser){
+            repository.addPlace(
+                userId = user!!.uid,
+                title = detailsUiState.title,
+                description = detailsUiState.note,
+                timestamp = Timestamp.now()
+            ) {
+                detailsUiState = detailsUiState.copy(placeAddedStatus = it)
+            }
+        }
+    }
+    fun getPlace(placeId: String){
+        repository.getPlace(
+            placeId = placeId,
+            onError = {}
+        ) {
+            detailsUiState = detailsUiState.copy(selectedPlace = it)
+            detailsUiState.selectedPlace?.let { it1 -> setEditFieldsPlace(it1) }
+        }
+    }
+     */
+
 }
 data class DetailsUiState(
     val colorIndex: Int = 0,
@@ -93,5 +146,8 @@ data class DetailsUiState(
     val note: String = "",
     val noteAddedStatus: Boolean = false,
     val updatedNoteStatus: Boolean = false,
-    val selectedNote: Notes? = null
+    val selectedNote: Notes? = null,
+    val placeAddedStatus: Boolean = false,
+    val updatedPlaceStatus: Boolean = false,
+    val selectedPlace: Places? = null
 )

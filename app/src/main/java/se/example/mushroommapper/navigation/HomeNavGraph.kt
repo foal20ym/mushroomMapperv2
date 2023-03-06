@@ -10,15 +10,13 @@ import se.example.mushroommapper.BottomBarScreen
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.view.*
 import se.example.mushroommapper.viewModel.HomeViewModel
-import se.example.mushroommapper.viewModel.MapViewModel
 
 @Composable
 fun HomeNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
-    detailViewModel: DetailViewModel,
-    mapViewModel: MapViewModel
+    detailViewModel: DetailViewModel
 ) {
     NavHost(
         navController = navController,
@@ -65,7 +63,7 @@ fun HomeNavGraph(
             }
         }
         composable(route = BottomBarScreen.Map.route) {
-            MapScreen(mapViewModel = mapViewModel)
+            MapScreen()
         }
         composable(route = BottomBarScreen.Settings.route) {
             /*ScreenContent(

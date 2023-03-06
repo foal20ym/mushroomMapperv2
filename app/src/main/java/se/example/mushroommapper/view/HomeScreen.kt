@@ -38,7 +38,7 @@ fun HomeScreen(
         bottomBar = { BottomBar(navController = navController) },
         topBar = { TopBar(navController = navController)}
     ) {
-        HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel, mapViewModel = mapViewModel)
+        HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel)
     }
 }
 

@@ -18,7 +18,6 @@ import se.example.mushroommapper.viewModel.MapViewModel
 @Composable
 fun MapScreen(
     dataViewModel: DataViewModel = viewModel(),
-    mapViewModel: MapViewModel
 ) {
     val singapore = LatLng(1.35, 103.87)
 

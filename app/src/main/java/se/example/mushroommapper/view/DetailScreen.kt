@@ -85,7 +85,7 @@ fun DetailScreen(
             if(detailsUiState.noteAddedStatus){
                 scope.launch {
                     scaffoldState.snackbarHostState
-                        .showSnackbar("Added Place Successfully")
+                        .showSnackbar("Added Note Successfully")
                     detailViewModel?.resetNoteAddedStatus()
                     onNavigate.invoke()
                 }
@@ -93,7 +93,7 @@ fun DetailScreen(
             if(detailsUiState.updatedNoteStatus){
                 scope.launch {
                     scaffoldState.snackbarHostState
-                        .showSnackbar("Place updated successfully")
+                        .showSnackbar("Note updated successfully")
                     detailViewModel?.resetNoteAddedStatus()
                     onNavigate.invoke()
                 }
@@ -113,6 +113,7 @@ fun DetailScreen(
 
                 }
             }
+            
             OutlinedTextField(value = detailsUiState.title,
                 onValueChange = {
                     detailViewModel?.onTitleChange(it)
