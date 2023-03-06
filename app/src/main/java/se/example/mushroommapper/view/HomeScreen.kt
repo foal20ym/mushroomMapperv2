@@ -1,3 +1,5 @@
+@file:JvmName("HomeKt")
+
 package se.example.mushroommapper.view
 
 import androidx.compose.foundation.layout.RowScope
@@ -14,24 +16,27 @@ import se.example.mushroommapper.BottomBarScreen
 import se.example.mushroommapper.navigation.HomeNavGraph
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import se.example.mushroommapper.detail.DetailViewModel
+import se.example.mushroommapper.viewModel.HomeViewModel
 
 @Composable
-fun HomeScreen(navController: NavHostController = rememberNavController()) {
+fun HomeScreen
+            (navController: NavHostController = rememberNavController(),
+             homeViewModel: HomeViewModel,
+             detailViewModel: DetailViewModel
+) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
         topBar = { TopBar(navController = navController)}
     ) {
-        HomeNavGraph(navController = navController)
+        HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel)
     }
 }
 

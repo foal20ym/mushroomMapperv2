@@ -25,15 +25,30 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import se.example.mushroommapper.navigation.RootNavigationGraph
 
 import androidx.activity.compose.setContent
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavOptions
 import dagger.hilt.android.AndroidEntryPoint
+import se.example.mushroommapper.detail.DetailViewModel
+import se.example.mushroommapper.viewModel.HomeViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+            val detailViewModel = viewModel(modelClass = DetailViewModel::class.java)
+            //val detailViewModel = viewModel(modelClass = DetailViewModel::class.java)
             MushroomMapperTheme {
-                RootNavigationGraph(navController = rememberNavController())
+                RootNavigationGraph(
+                    navController = rememberNavController(),
+                    detailViewModel = detailViewModel,
+                    homeViewModel = homeViewModel
+                )
+                /*Navigation(
+                    detailViewModel = detailViewModel,
+                    homeViewModel = homeViewModel
+                )*/
             }
         }
     }

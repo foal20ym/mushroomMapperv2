@@ -3,6 +3,8 @@ package se.example.mushroommapper.data
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -41,5 +43,7 @@ class AuthRepositoryImpl @Inject constructor(
             emit(Resource.Error(it.message.toString()))
         }
     }
+
+    fun signOut() = Firebase.auth.signOut()
 
 }
