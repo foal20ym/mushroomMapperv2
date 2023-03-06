@@ -1,5 +1,6 @@
 package se.example.mushroommapper.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -45,7 +46,7 @@ fun DetailScreen(
             detailsUiState.title.isNotBlank()
 
     val isNoteIdNotBlank = noteId.isNotBlank()
-    val icon = if(isFormsNotBlank) Icons.Default.Refresh
+    val icon = if(isNoteIdNotBlank) Icons.Default.Refresh
         else Icons.Default.Check
     LaunchedEffect(key1 = Unit){
         if(isNoteIdNotBlank){
@@ -61,16 +62,18 @@ fun DetailScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    if(isNoteIdNotBlank){
-                        detailViewModel?.updateNote(noteId)
-                    } else {
-                        detailViewModel?.addNote()
+            AnimatedVisibility(visible = isFormsNotBlank) {
+                FloatingActionButton(
+                    onClick = {
+                        if(isNoteIdNotBlank){
+                            detailViewModel?.updateNote(noteId)
+                        } else {
+                            detailViewModel?.addNote()
+                        }
                     }
+                ) {
+                    Icon(imageVector = icon, contentDescription = null)
                 }
-            ) {
-                Icon(imageVector = icon, contentDescription = null)
             }
         },
     ) { padding ->  
@@ -123,7 +126,8 @@ fun DetailScreen(
                 value = detailsUiState.note,
                 onValueChange = { detailViewModel?.onNoteChange(it)},
                 label = { Text(text = "Notes")},
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .weight(1f)
                     .padding(8.dp)
             )

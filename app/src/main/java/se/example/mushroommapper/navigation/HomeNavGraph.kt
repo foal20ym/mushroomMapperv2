@@ -30,13 +30,13 @@ fun HomeNavGraph(
                 homeViewModel = homeViewModel,
                 onNoteClick = { noteId ->
                     navController.navigate(
-                        Graph.DETAILS + "?id=$noteId"
+                        BottomBarScreen.Profile.route + "?id=$noteId"
                     ){
                         launchSingleTop = true
                     }
                 },
                 navToDetailPage = {
-                    navController.navigate(Graph.DETAILS)
+                    navController.navigate(BottomBarScreen.Profile.route)
                 }
             ) {
                 navController.navigate(Graph.AUTHENTICATION){
@@ -47,6 +47,7 @@ fun HomeNavGraph(
                 }
             }
         }
+        // 1:28:32
         composable(
             route = BottomBarScreen.Profile.route + "?id={id}",
             arguments = listOf(navArgument("id"){

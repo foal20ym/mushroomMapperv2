@@ -47,6 +47,11 @@ fun Home(
 
     val scaffoldState = rememberScaffoldState()
 
+    LaunchedEffect(key1 = Unit){
+        homeViewModel?.loadNotes()
+    }
+    
+    
     Scaffold(
 
     ) { padding -> 
