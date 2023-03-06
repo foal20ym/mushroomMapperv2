@@ -4,28 +4,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import se.example.mushroommapper.firestore.DataViewModel
-import se.example.mushroommapper.firestore.getDataFromFireStore
-import se.example.mushroommapper.model.Place
+import se.example.mushroommapper.model.Places
+import se.example.mushroommapper.viewModel.DataViewModel
+import se.example.mushroommapper.viewModel.MapViewModel
 
 
 @Composable
 fun MapScreen(
-    dataViewModel: DataViewModel = viewModel()
+    dataViewModel: DataViewModel = viewModel(),
+    mapViewModel: MapViewModel
 ) {
     val singapore = LatLng(1.35, 103.87)
 
     val places = listOf(
-        Place("Singapore","Nice city",1.36,103.87),
-        Place("Singapore2","Nice city",1.39,103.87),
-        Place("Singapore3","Nice city",1.41,103.87)
+        Places("Singapore","Nice city", "cool city",1.36,103.87),
+        Places("Singapore2","Nice city", "cool city",1.39,103.87),
+        Places("Singapore3","Nice city", "cool city",1.42,103.87),
     )
 
     val getData = dataViewModel.state.value

@@ -25,18 +25,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.viewModel.HomeViewModel
+import se.example.mushroommapper.viewModel.MapViewModel
 
 @Composable
-fun HomeScreen
-            (navController: NavHostController = rememberNavController(),
-             homeViewModel: HomeViewModel,
-             detailViewModel: DetailViewModel
+fun HomeScreen(
+    navController: NavHostController = rememberNavController(),
+    homeViewModel: HomeViewModel,
+    detailViewModel: DetailViewModel,
+    mapViewModel: MapViewModel
 ) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
         topBar = { TopBar(navController = navController)}
     ) {
-        HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel)
+        HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel, mapViewModel = mapViewModel)
     }
 }
 

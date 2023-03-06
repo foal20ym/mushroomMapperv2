@@ -16,7 +16,7 @@ import se.example.mushroommapper.model.Notes
 
 class HomeViewModel(
     private val repository: StorageRepository = StorageRepository(),
-    //private val authRepository: AuthRepositoryImpl
+    //private val authRepository: AuthRepositoryImpl // Lägg till? testa om det funkar med ev
 ): ViewModel() {
     var homeUIState by mutableStateOf(HomeUIState())
 

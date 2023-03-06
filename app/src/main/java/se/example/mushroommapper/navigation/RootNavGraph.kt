@@ -7,12 +7,14 @@ import androidx.navigation.compose.composable
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.view.HomeScreen
 import se.example.mushroommapper.viewModel.HomeViewModel
+import se.example.mushroommapper.viewModel.MapViewModel
 
 @Composable
 fun RootNavigationGraph(
     navController: NavHostController,
     homeViewModel: HomeViewModel,
-    detailViewModel: DetailViewModel
+    detailViewModel: DetailViewModel,
+    mapViewModel: MapViewModel
 ) {
     NavHost(
         navController = navController,
@@ -21,7 +23,7 @@ fun RootNavigationGraph(
     ) {
         NavigationGraph(navController = navController)
         composable(route = Graph.HOME) {
-            HomeScreen(homeViewModel = homeViewModel, detailViewModel = detailViewModel)
+            HomeScreen(homeViewModel = homeViewModel, detailViewModel = detailViewModel, mapViewModel = mapViewModel)
         }
     }
 }

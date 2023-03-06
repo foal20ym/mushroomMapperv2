@@ -85,7 +85,7 @@ fun DetailScreen(
             if(detailsUiState.noteAddedStatus){
                 scope.launch {
                     scaffoldState.snackbarHostState
-                        .showSnackbar("Added Note Successfully")
+                        .showSnackbar("Added Place Successfully")
                     detailViewModel?.resetNoteAddedStatus()
                     onNavigate.invoke()
                 }
@@ -93,7 +93,7 @@ fun DetailScreen(
             if(detailsUiState.updatedNoteStatus){
                 scope.launch {
                     scaffoldState.snackbarHostState
-                        .showSnackbar("Note updated successfully")
+                        .showSnackbar("Place updated successfully")
                     detailViewModel?.resetNoteAddedStatus()
                     onNavigate.invoke()
                 }
