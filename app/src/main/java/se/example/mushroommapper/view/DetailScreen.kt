@@ -31,150 +31,118 @@ fun DetailScreen(
     val isFormsNotBlank = detailsUiState.place.isNotBlank() &&
             detailsUiState.title.isNotBlank()
 
-    val isPlaceIdNotBlank = placeId.isNotBlank()
-    val icon = if(isPlaceIdNotBlank) Icons.Default.Refresh
+    val isNotNull = detailsUiState.latitude != null && detailsUiState.longitude != null
+
+
+        val isPlaceIdNotBlank = placeId.isNotBlank()
+        val icon = if(isPlaceIdNotBlank) Icons.Default.Refresh
         else Icons.Default.Check
-    LaunchedEffect(key1 = Unit){
-        if(isPlaceIdNotBlank){
-            detailViewModel?.getPlace(placeId)
-        }else{
-            detailViewModel?.resetState()
+        LaunchedEffect(key1 = Unit){
+            if(isPlaceIdNotBlank){
+                detailViewModel?.getPlace(placeId)
+            }else{
+                detailViewModel?.resetState()
+            }
         }
-    }
-    val scope = rememberCoroutineScope()
+        val scope = rememberCoroutineScope()
 
-    val scaffoldState = rememberScaffoldState()
+        val scaffoldState = rememberScaffoldState()
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        floatingActionButton = {
-            AnimatedVisibility(visible = isFormsNotBlank) {
-                FloatingActionButton(
-                    onClick = {
-                        if(isPlaceIdNotBlank){
-                            detailViewModel?.updatePlace(placeId)
-                        } else {
-                            detailViewModel?.addPlace()
+        Scaffold(
+            scaffoldState = scaffoldState,
+            floatingActionButton = {
+                AnimatedVisibility(visible = isFormsNotBlank) {
+                    FloatingActionButton(
+                        onClick = {
+                            if(isPlaceIdNotBlank){
+                                detailViewModel?.updatePlace(placeId)
+                            } else {
+                                detailViewModel?.addPlace()
+                            }
                         }
+                    ) {
+                        Icon(imageVector = icon, contentDescription = null)
                     }
-                ) {
-                    Icon(imageVector = icon, contentDescription = null)
                 }
-            }
-        },
-    ) { padding ->  
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.Gray)
-            .padding(padding)
-        ) {
-            if(detailsUiState.placeAddedStatus){
-                scope.launch {
-                    scaffoldState.snackbarHostState
-                        .showSnackbar("Added Place Successfully")
-                    detailViewModel?.resetPlaceAddedStatus()
-                    onNavigate.invoke()
+            },
+        ) { padding ->
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.Gray)
+                .padding(padding)
+            ) {
+                if(detailsUiState.placeAddedStatus){
+                    scope.launch {
+                        scaffoldState.snackbarHostState
+                            .showSnackbar("Added Place Successfully")
+                        detailViewModel?.resetPlaceAddedStatus()
+                        onNavigate.invoke()
+                    }
                 }
-            }
-            if(detailsUiState.updatedPlaceStatus){
-                scope.launch {
-                    scaffoldState.snackbarHostState
-                        .showSnackbar("Place updated successfully")
-                    detailViewModel?.resetPlaceAddedStatus()
-                    onNavigate.invoke()
+                if(detailsUiState.updatedPlaceStatus){
+                    scope.launch {
+                        scaffoldState.snackbarHostState
+                            .showSnackbar("Place updated successfully")
+                        detailViewModel?.resetPlaceAddedStatus()
+                        onNavigate.invoke()
+                    }
                 }
-            }
 
-            /*LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                contentPadding = PaddingValues(
-                    vertical = 16.dp, horizontal = 8.dp
+                /*LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    contentPadding = PaddingValues(
+                        vertical = 16.dp, horizontal = 8.dp
+                    )
+                ){
+                    itemsIndexed(Utils.colors){ colorIndex, color ->
+                        ColorItem(color = color) {
+                            detailViewModel?.onColorChange(colorIndex)
+                        }
+
+                    }
+                }*/
+
+                OutlinedTextField(value = detailsUiState.title,
+                    onValueChange = {
+                        detailViewModel?.onTitleChange(it)
+                    },
+                    label = { Text(text = "Title")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
                 )
-            ){
-                itemsIndexed(Utils.colors){ colorIndex, color ->
-                    ColorItem(color = color) {
-                        detailViewModel?.onColorChange(colorIndex)
-                    }
+                OutlinedTextField(
+                    value = detailsUiState.place,
+                    onValueChange = { detailViewModel?.onPlaceChange(it)},
+                    label = { Text(text = "Description")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .padding(8.dp)
+                )
 
-                }
-            }*/
+                OutlinedTextField(
+                    value = if (detailsUiState.latitude == null) "" else detailsUiState.latitude.toString(),
+                    onValueChange = { detailViewModel?.onLatitudeChange(it)},
+                    label = { Text(text = "Latitude")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                )
+                OutlinedTextField(
+                    value = if (detailsUiState.longitude == null) "" else detailsUiState.longitude.toString(),
+                    onValueChange = { detailViewModel?.onLongitudeChange(it)},
+                    label = { Text(text = "Longitude")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                )
 
-            OutlinedTextField(value = detailsUiState.title,
-                onValueChange = {
-                    detailViewModel?.onTitleChange(it)
-                },
-                label = { Text(text = "Title")},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-            OutlinedTextField(
-                value = detailsUiState.place,
-                onValueChange = { detailViewModel?.onPlaceChange(it)},
-                label = { Text(text = "Description")},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(8.dp)
-            )
-
-            OutlinedTextField(
-                value = detailsUiState.latitude.toString(),
-                onValueChange = { detailViewModel?.onLatitudeChange(it.toDouble())},
-                label = { Text(text = "Latitude")},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-            OutlinedTextField(
-                value = detailsUiState.longitude.toString(),
-                onValueChange = { detailViewModel?.onLongitudeChange(it.toDouble())},
-                label = { Text(text = "Longitude")},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-
-            /*
-
-            OutlinedTextField(value = detailsUiState.title,
-                onValueChange = {
-                    detailViewModel?.onTitleChange(it)
-                },
-                label = { Text(text = "Title")},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-            OutlinedTextField(
-                value = detailsUiState.place,
-                onValueChange = { detailViewModel?.onPlaceChange(it)},
-                label = { Text(text = "Description")},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(8.dp)
-            )
-
-            TextField(
-                label = { Text(text = "Latitude") },
-                value = detailsUiState.latitude.toString(),
-                onValueChange = { detailViewModel?.onPlaceChange(it) }
-            )
-
-            TextField(
-                label = { Text(text = "Longitude") },
-                value = detailsUiState.longitude.toString(),
-                onValueChange = { detailViewModel?.onPlaceChange(it) }
-            //value -> longitude.value = value
-            )
-             */
+            }
         }
-    }
-
-
 }
+
 
 @Composable
 fun ColorItem(

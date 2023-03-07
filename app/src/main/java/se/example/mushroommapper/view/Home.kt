@@ -49,11 +49,11 @@ fun Home(
     LaunchedEffect(key1 = Unit){
         homeViewModel?.loadPlaces()
     }
-    
-    
+
+
     Scaffold(
 
-    ) { padding -> 
+    ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             when(homeUIState.placesList){
                 is Resources.Loading -> {
@@ -80,7 +80,7 @@ fun Home(
                                 onPlaceClick.invoke(place.documentId)
                             }
                         }
-                        
+
                     }
                     AnimatedVisibility(visible = openDialog) {
                         AlertDialog(onDismissRequest = {

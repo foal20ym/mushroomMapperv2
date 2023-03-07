@@ -34,11 +34,19 @@ class DetailViewModel(
     fun onPlaceChange(place:String) {
         detailsUiState = detailsUiState.copy(place = place)
     }
-    fun onLatitudeChange(latitude: Double) {
-        detailsUiState = detailsUiState.copy(latitude = latitude)
+    fun onLatitudeChange(latitude: String) {
+        try {
+            detailsUiState = detailsUiState.copy(latitude = latitude.toDouble())
+        } catch(e:Exception) {
+            println(e)
+        }
     }
-    fun onLongitudeChange(longitude: Double) {
-        detailsUiState = detailsUiState.copy(longitude = longitude)
+    fun onLongitudeChange(longitude: String) {
+        try {
+            detailsUiState = detailsUiState.copy(longitude = longitude.toDouble())
+        } catch(e:Exception) {
+            println(e)
+        }
     }
 
     fun addNote() {
@@ -56,13 +64,14 @@ class DetailViewModel(
     }
 
     fun addPlace() {
+
         if(hasUser){
             repository.addPlace(
                 userId = user!!.uid,
                 title = detailsUiState.title,
                 description = detailsUiState.place,
-                latitude = detailsUiState.latitude,
-                longitude = detailsUiState.longitude,
+                latitude = detailsUiState.latitude!!,
+                longitude = detailsUiState.longitude!!,
                 timestamp = Timestamp.now()
             ) {
                 detailsUiState = detailsUiState.copy(placeAddedStatus = it)
@@ -151,6 +160,7 @@ class DetailViewModel(
 
 
 }
+
 data class DetailsUiState(
     val colorIndex: Int = 0,
     val title: String = "",
@@ -159,8 +169,8 @@ data class DetailsUiState(
     val updatedNoteStatus: Boolean = false,
     val selectedNote: Notes? = null,
     val place: String = "",
-    val latitude: Double = 0.0,
-    val longitude: Double = 0.0,
+    val latitude: Double ?= null,
+    val longitude: Double ?= null,
     val placeAddedStatus: Boolean = false,
     val updatedPlaceStatus: Boolean = false,
     val selectedPlace: Places? = null
