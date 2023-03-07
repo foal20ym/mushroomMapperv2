@@ -1,5 +1,8 @@
+@file:JvmName("HomeKt")
+
 package se.example.mushroommapper.view
 
+import androidx.compose.foundation.layout.*
 
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -19,12 +22,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import se.example.mushroommapper.detail.DetailViewModel
+import se.example.mushroommapper.navigation.Graph
+import se.example.mushroommapper.viewModel.HomeViewModel
+import se.example.mushroommapper.viewModel.MapViewModel
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,12 +46,20 @@ import se.example.mushroommapper.R
 import java.util.concurrent.Executors
 
 @Composable
-fun HomeScreen(navController: NavHostController = rememberNavController()) {
+fun HomeScreen(
+    navController: NavHostController = rememberNavController(),
+    homeViewModel: HomeViewModel,
+    detailViewModel: DetailViewModel,
+    mapViewModel: MapViewModel
+) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
-        topBar = { TopBar(navController = navController)}
-    ) {
-        HomeNavGraph(navController = navController)
+        topBar = { TopBar(navController = navController)},
+        modifier = Modifier
+    ) { PaddingValues ->
+        Column(modifier = Modifier.padding(PaddingValues)){
+            HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel)
+        }
     }
 }
 
@@ -60,7 +76,7 @@ fun TopBar(navController: NavHostController) {
             }
         },
         navigationIcon = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = {navController.navigate(Graph.HOME)}) {
                 Icon(Icons.Filled.ArrowBack, "backIcon")
             }
         },

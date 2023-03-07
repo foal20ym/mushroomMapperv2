@@ -40,7 +40,12 @@ import java.util.concurrent.Executors
 import java.util.jar.Manifest
 
 import androidx.activity.compose.setContent
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavOptions
 import dagger.hilt.android.AndroidEntryPoint
+import se.example.mushroommapper.detail.DetailViewModel
+import se.example.mushroommapper.viewModel.HomeViewModel
+import se.example.mushroommapper.viewModel.MapViewModel
 
 
 @AndroidEntryPoint
@@ -48,8 +53,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+            val detailViewModel = viewModel(modelClass = DetailViewModel::class.java)
+            val mapViewModel = viewModel(modelClass = MapViewModel::class.java)
+            //val detailViewModel = viewModel(modelClass = DetailViewModel::class.java)
             MushroomMapperTheme {
-                RootNavigationGraph(navController = rememberNavController())
+                RootNavigationGraph(
+                    navController = rememberNavController(),
+                    detailViewModel = detailViewModel,
+                    homeViewModel = homeViewModel,
+                    mapViewModel = mapViewModel
+                )
+                /*Navigation(
+                    detailViewModel = detailViewModel,
+                    homeViewModel = homeViewModel
+                )*/
             }
         }
     }

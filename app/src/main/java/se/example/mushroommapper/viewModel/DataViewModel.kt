@@ -1,4 +1,4 @@
-package se.example.mushroommapper.firestore
+package se.example.mushroommapper.viewModel
 
 import android.content.Context
 import android.util.Log
@@ -11,10 +11,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import se.example.mushroommapper.model.Place
+import se.example.mushroommapper.model.Places
 
 class DataViewModel: ViewModel() {
-    val state = mutableStateOf(Place())
+    val state = mutableStateOf(Places())
 
     init {
         getData()
@@ -36,7 +36,7 @@ fun addDataToFireStore(
 ) {
     val db = FirebaseFirestore.getInstance()
     val dbAbout: CollectionReference = db.collection("Place")
-    val place = Place(title, description, latitude, longitude)
+    val place = Places(title, description, latitude = 0.0, longitude = 0.0)
 
     dbAbout.add(place).addOnSuccessListener {
         Toast.makeText(
@@ -52,13 +52,13 @@ fun addDataToFireStore(
 
 }
 
-suspend fun getDataFromFireStore(): Place {
+suspend fun getDataFromFireStore(): Places {
     val db = FirebaseFirestore.getInstance()
-    var place = Place()
+    var place = Places()
 
     try {
         db.collection("place").get().await().map {
-            val result = it.toObject(Place::class.java)
+            val result = it.toObject(Places::class.java)
             place = result
         }
     }catch (e: FirebaseFirestoreException) {

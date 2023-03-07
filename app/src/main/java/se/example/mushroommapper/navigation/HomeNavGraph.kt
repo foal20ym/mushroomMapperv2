@@ -1,37 +1,70 @@
 package se.example.mushroommapper.navigation
 
+import Home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import se.example.mushroommapper.BottomBarScreen
+import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.view.*
 import se.example.mushroommapper.view.CameraScreen
 import se.example.mushroommapper.view.MapScreen
 import se.example.mushroommapper.view.ScreenContent
 import se.example.mushroommapper.view.SignUpScreen
+import se.example.mushroommapper.viewModel.HomeViewModel
 
 @Composable
-fun HomeNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
+fun HomeNavGraph(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel,
+    detailViewModel: DetailViewModel
+) {
     NavHost(
         navController = navController,
         route = Graph.HOME,
         startDestination = BottomBarScreen.Home.route,
         modifier = modifier
     ) {
-        composable(route = BottomBarScreen.Home.route) {
-            ScreenContent(
-                name = BottomBarScreen.Home.route,
-                onClick = {
-                    navController.navigate(Graph.DETAILS)
+
+        composable(route = BottomBarScreen.Home.route){
+            Home(
+                homeViewModel = homeViewModel,
+                onPlaceClick = { noteId ->
+                    navController.navigate(
+                        BottomBarScreen.Profile.route + "?id=$noteId"
+                    ){
+                        launchSingleTop = true
+                    }
+                },
+                navToDetailPage = {
+                    navController.navigate(BottomBarScreen.Profile.route)
                 }
-            )
+            ) {
+                navController.navigate(Graph.AUTHENTICATION){
+                    launchSingleTop = true
+                    popUpTo(0){
+                        inclusive = true
+                    }
+                }
+            }
         }
-        composable(route = BottomBarScreen.Profile.route) {
-            ProfileScreen()
+        // 1:28:32
+        composable(
+            route = BottomBarScreen.Profile.route + "?id={id}",
+            arguments = listOf(navArgument("id"){
+                type = NavType.StringType
+                defaultValue = ""
+            })
+        ) { entry ->
+            DetailScreen(
+                detailViewModel = detailViewModel,
+                placeId = entry.arguments?.getString("id") as String,
+            ) {
+                navController.navigateUp()
+            }
         }
         composable(route = BottomBarScreen.Map.route) {
             MapScreen()

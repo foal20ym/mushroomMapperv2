@@ -1,4 +1,4 @@
-package se.example.mushroommapper.di
+package se.example.mushroommapper.dependencyInjections
 
 import android.app.Application
 import androidx.camera.core.AspectRatio
