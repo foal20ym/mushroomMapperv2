@@ -27,9 +27,6 @@ class DetailViewModel(
     fun onTitleChange(title:String) {
         detailsUiState = detailsUiState.copy(title = title)
     }
-    fun onNoteChange(note:String) {
-        detailsUiState = detailsUiState.copy(note = note)
-    }
 
     fun onPlaceChange(place:String) {
         detailsUiState = detailsUiState.copy(place = place)
@@ -49,20 +46,6 @@ class DetailViewModel(
         }
     }
 
-    fun addNote() {
-        if(hasUser){
-            repository.addNote(
-                userId = user!!.uid,
-                title = detailsUiState.title,
-                description = detailsUiState.note,
-                color = detailsUiState.colorIndex,
-                timestamp = Timestamp.now()
-            ) {
-                detailsUiState = detailsUiState.copy(noteAddedStatus = it)
-            }
-        }
-    }
-
     fun addPlace() {
 
         if(hasUser){
@@ -79,29 +62,11 @@ class DetailViewModel(
         }
     }
 
-    fun setEditFields(note: Notes){
-        detailsUiState = detailsUiState.copy(
-            colorIndex = note.colorIndex,
-            title = note.title,
-            note = note.description
-        )
-    }
-
     fun setEditFieldsPlace(place: Places){
         detailsUiState = detailsUiState.copy(
             title = place.title,
             place = place.description
         )
-    }
-
-    fun getNote(noteId: String){
-        repository.getNote(
-            noteId = noteId,
-            onError = {}
-        ) {
-            detailsUiState = detailsUiState.copy(selectedNote = it)
-            detailsUiState.selectedNote?.let { it1 -> setEditFields(it1) }
-        }
     }
 
     fun getPlace(placeId: String){
@@ -111,20 +76,6 @@ class DetailViewModel(
         ) {
             detailsUiState = detailsUiState.copy(selectedPlace = it)
             detailsUiState.selectedPlace?.let { it1 -> setEditFieldsPlace(it1) }
-        }
-    }
-
-
-    fun updateNote(
-        noteId: String
-    ){
-        repository.updateNote(
-            title = detailsUiState.title,
-            note = detailsUiState.note,
-            noteId = noteId,
-            color = detailsUiState.colorIndex
-        ){
-            detailsUiState = detailsUiState.copy(updatedNoteStatus = it)
         }
     }
 
@@ -138,13 +89,6 @@ class DetailViewModel(
         ){
             detailsUiState = detailsUiState.copy(updatedPlaceStatus = it)
         }
-    }
-
-    fun resetNoteAddedStatus(){
-        detailsUiState = detailsUiState.copy(
-            noteAddedStatus = false,
-            updatedNoteStatus = false
-        )
     }
 
     fun resetPlaceAddedStatus(){
@@ -164,10 +108,6 @@ class DetailViewModel(
 data class DetailsUiState(
     val colorIndex: Int = 0,
     val title: String = "",
-    val note: String = "",
-    val noteAddedStatus: Boolean = false,
-    val updatedNoteStatus: Boolean = false,
-    val selectedNote: Notes? = null,
     val place: String = "",
     val latitude: Double ?= null,
     val longitude: Double ?= null,

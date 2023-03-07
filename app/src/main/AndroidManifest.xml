@@ -8,7 +8,6 @@
         android:maxSdkVersion="28"/>
 
     <application
-        android:name=".BaseCameraApplication"
         android:allowBackup="true"
         android:name=".ApplicationFirebaseAuth"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -36,7 +35,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="234254564564678766565" />
+            android:value="{googleMapsApiKey}" />
 
     </application>
 
