@@ -2,7 +2,7 @@
 
 package se.example.mushroommapper.view
 
-import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,8 +14,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import se.example.mushroommapper.BottomBarScreen
 import se.example.mushroommapper.navigation.HomeNavGraph
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Phone
@@ -24,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import se.example.mushroommapper.detail.DetailViewModel
+import se.example.mushroommapper.navigation.Graph
 import se.example.mushroommapper.viewModel.HomeViewModel
 import se.example.mushroommapper.viewModel.MapViewModel
 
@@ -36,9 +35,12 @@ fun HomeScreen(
 ) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
-        topBar = { TopBar(navController = navController)}
-    ) {
-        HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel)
+        topBar = { TopBar(navController = navController)},
+        modifier = Modifier
+    ) { PaddingValues ->
+        Column(modifier = Modifier.padding(PaddingValues)){
+            HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel)
+        }
     }
 }
 
@@ -55,7 +57,7 @@ fun TopBar(navController: NavHostController) {
             }
         },
         navigationIcon = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = {navController.navigate(Graph.HOME)}) {
                 Icon(Icons.Filled.ArrowBack, "backIcon")
             }
         },
