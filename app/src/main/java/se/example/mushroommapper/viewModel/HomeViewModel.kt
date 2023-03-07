@@ -5,14 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import se.example.mushroommapper.data.AuthRepositoryImpl
 import se.example.mushroommapper.data.Resources
 import se.example.mushroommapper.data.StorageRepository
-import se.example.mushroommapper.model.Notes
+import se.example.mushroommapper.model.Places
 
 class HomeViewModel(
     private val repository: StorageRepository = StorageRepository(),
@@ -26,26 +22,26 @@ class HomeViewModel(
     private val userId: String
         get() = repository.getUserId()
 
-    fun loadNotes(){
+    fun loadPlaces(){
         if(hasUser){
             if(userId.isNotBlank()){
-                getUserNotes(userId)
+                getUserPlaces(userId)
             }
         } else {
-            homeUIState = homeUIState.copy(notesList = Resources.Error(
+            homeUIState = homeUIState.copy(placesList = Resources.Error(
                 throwable = Throwable(message = "User is not Logged in")
             ))
         }
     }
 
-    private fun getUserNotes(userId: String) = viewModelScope.launch {
-        repository.getUserNotes(userId).collect {
-            homeUIState = homeUIState.copy(notesList = it)
+    private fun getUserPlaces(userId: String) = viewModelScope.launch {
+        repository.getUserPlaces(userId).collect {
+            homeUIState = homeUIState.copy(placesList = it)
         }
     }
 
-    fun deleteNote(noteId: String) = repository.deleteNote(noteId){
-        homeUIState = homeUIState.copy(noteDeletedStatus = it)
+    fun deletePlace(placeId: String) = repository.deletePlace(placeId){
+        homeUIState = homeUIState.copy(placeDeletedStatus = it)
     }
 
     //fun signOut() = authRepository.signOut()
@@ -54,6 +50,6 @@ class HomeViewModel(
 }
 
 data class HomeUIState(
-    val notesList: Resources<List<Notes>> = Resources.Loading(),
-    val noteDeletedStatus: Boolean = false
+    val placesList: Resources<List<Places>> = Resources.Loading(),
+    val placeDeletedStatus: Boolean = false
 )

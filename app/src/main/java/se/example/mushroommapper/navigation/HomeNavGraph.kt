@@ -28,7 +28,7 @@ fun HomeNavGraph(
         composable(route = BottomBarScreen.Home.route){
             Home(
                 homeViewModel = homeViewModel,
-                onNoteClick = { noteId ->
+                onPlaceClick = { noteId ->
                     navController.navigate(
                         BottomBarScreen.Profile.route + "?id=$noteId"
                     ){
@@ -57,7 +57,7 @@ fun HomeNavGraph(
         ) { entry ->
             DetailScreen(
                 detailViewModel = detailViewModel,
-                noteId = entry.arguments?.getString("id") as String,
+                placeId = entry.arguments?.getString("id") as String,
             ) {
                 navController.navigateUp()
             }

@@ -9,48 +9,34 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import se.example.mushroommapper.BottomBarScreen
-import se.example.mushroommapper.navigation.HomeNavGraph
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.detail.DetailsUiState
-import se.example.mushroommapper.navigation.DetailsScreen
-import se.example.mushroommapper.viewModel.HomeUIState
-import se.example.mushroommapper.viewModel.HomeViewModel
 
 @Composable
 fun DetailScreen(
     detailViewModel: DetailViewModel?, // optional?? eller inte?
-    noteId: String,
+    placeId: String,
     onNavigate:() -> Unit
 ){
     val detailsUiState = detailViewModel?.detailsUiState ?: DetailsUiState()
 
-    val isFormsNotBlank = detailsUiState.note.isNotBlank() &&
+    val isFormsNotBlank = detailsUiState.place.isNotBlank() &&
             detailsUiState.title.isNotBlank()
 
-    val isNoteIdNotBlank = noteId.isNotBlank()
-    val icon = if(isNoteIdNotBlank) Icons.Default.Refresh
+    val isPlaceIdNotBlank = placeId.isNotBlank()
+    val icon = if(isPlaceIdNotBlank) Icons.Default.Refresh
         else Icons.Default.Check
     LaunchedEffect(key1 = Unit){
-        if(isNoteIdNotBlank){
-            detailViewModel?.getNote(noteId)
+        if(isPlaceIdNotBlank){
+            detailViewModel?.getPlace(placeId)
         }else{
             detailViewModel?.resetState()
         }
@@ -65,10 +51,10 @@ fun DetailScreen(
             AnimatedVisibility(visible = isFormsNotBlank) {
                 FloatingActionButton(
                     onClick = {
-                        if(isNoteIdNotBlank){
-                            detailViewModel?.updateNote(noteId)
+                        if(isPlaceIdNotBlank){
+                            detailViewModel?.updatePlace(placeId)
                         } else {
-                            detailViewModel?.addNote()
+                            detailViewModel?.addPlace()
                         }
                     }
                 ) {
@@ -82,24 +68,24 @@ fun DetailScreen(
             .background(color = Color.Gray)
             .padding(padding)
         ) {
-            if(detailsUiState.noteAddedStatus){
+            if(detailsUiState.placeAddedStatus){
                 scope.launch {
                     scaffoldState.snackbarHostState
-                        .showSnackbar("Added Note Successfully")
-                    detailViewModel?.resetNoteAddedStatus()
+                        .showSnackbar("Added Place Successfully")
+                    detailViewModel?.resetPlaceAddedStatus()
                     onNavigate.invoke()
                 }
             }
-            if(detailsUiState.updatedNoteStatus){
+            if(detailsUiState.updatedPlaceStatus){
                 scope.launch {
                     scaffoldState.snackbarHostState
-                        .showSnackbar("Note updated successfully")
-                    detailViewModel?.resetNoteAddedStatus()
+                        .showSnackbar("Place updated successfully")
+                    detailViewModel?.resetPlaceAddedStatus()
                     onNavigate.invoke()
                 }
             }
 
-            LazyRow(
+            /*LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 contentPadding = PaddingValues(
@@ -112,8 +98,8 @@ fun DetailScreen(
                     }
 
                 }
-            }
-            
+            }*/
+
             OutlinedTextField(value = detailsUiState.title,
                 onValueChange = {
                     detailViewModel?.onTitleChange(it)
@@ -124,15 +110,66 @@ fun DetailScreen(
                     .padding(8.dp)
             )
             OutlinedTextField(
-                value = detailsUiState.note,
-                onValueChange = { detailViewModel?.onNoteChange(it)},
-                label = { Text(text = "Notes")},
+                value = detailsUiState.place,
+                onValueChange = { detailViewModel?.onPlaceChange(it)},
+                label = { Text(text = "Description")},
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(8.dp)
             )
 
+            OutlinedTextField(
+                value = detailsUiState.latitude.toString(),
+                onValueChange = { detailViewModel?.onLatitudeChange(it.toDouble())},
+                label = { Text(text = "Latitude")},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+            OutlinedTextField(
+                value = detailsUiState.longitude.toString(),
+                onValueChange = { detailViewModel?.onLongitudeChange(it.toDouble())},
+                label = { Text(text = "Longitude")},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+
+            /*
+
+            OutlinedTextField(value = detailsUiState.title,
+                onValueChange = {
+                    detailViewModel?.onTitleChange(it)
+                },
+                label = { Text(text = "Title")},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+            OutlinedTextField(
+                value = detailsUiState.place,
+                onValueChange = { detailViewModel?.onPlaceChange(it)},
+                label = { Text(text = "Description")},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(8.dp)
+            )
+
+            TextField(
+                label = { Text(text = "Latitude") },
+                value = detailsUiState.latitude.toString(),
+                onValueChange = { detailViewModel?.onPlaceChange(it) }
+            )
+
+            TextField(
+                label = { Text(text = "Longitude") },
+                value = detailsUiState.longitude.toString(),
+                onValueChange = { detailViewModel?.onPlaceChange(it) }
+            //value -> longitude.value = value
+            )
+             */
         }
     }
 

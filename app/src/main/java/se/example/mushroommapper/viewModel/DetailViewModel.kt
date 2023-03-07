@@ -31,6 +31,16 @@ class DetailViewModel(
         detailsUiState = detailsUiState.copy(note = note)
     }
 
+    fun onPlaceChange(place:String) {
+        detailsUiState = detailsUiState.copy(place = place)
+    }
+    fun onLatitudeChange(latitude: Double) {
+        detailsUiState = detailsUiState.copy(latitude = latitude)
+    }
+    fun onLongitudeChange(longitude: Double) {
+        detailsUiState = detailsUiState.copy(longitude = longitude)
+    }
+
     fun addNote() {
         if(hasUser){
             repository.addNote(
@@ -41,6 +51,21 @@ class DetailViewModel(
                 timestamp = Timestamp.now()
             ) {
                 detailsUiState = detailsUiState.copy(noteAddedStatus = it)
+            }
+        }
+    }
+
+    fun addPlace() {
+        if(hasUser){
+            repository.addPlace(
+                userId = user!!.uid,
+                title = detailsUiState.title,
+                description = detailsUiState.place,
+                latitude = detailsUiState.latitude,
+                longitude = detailsUiState.longitude,
+                timestamp = Timestamp.now()
+            ) {
+                detailsUiState = detailsUiState.copy(placeAddedStatus = it)
             }
         }
     }
@@ -56,7 +81,7 @@ class DetailViewModel(
     fun setEditFieldsPlace(place: Places){
         detailsUiState = detailsUiState.copy(
             title = place.title,
-            note = place.description
+            place = place.description
         )
     }
 
@@ -67,6 +92,16 @@ class DetailViewModel(
         ) {
             detailsUiState = detailsUiState.copy(selectedNote = it)
             detailsUiState.selectedNote?.let { it1 -> setEditFields(it1) }
+        }
+    }
+
+    fun getPlace(placeId: String){
+        repository.getPlace(
+            placeId = placeId,
+            onError = {}
+        ) {
+            detailsUiState = detailsUiState.copy(selectedPlace = it)
+            detailsUiState.selectedPlace?.let { it1 -> setEditFieldsPlace(it1) }
         }
     }
 
@@ -84,6 +119,18 @@ class DetailViewModel(
         }
     }
 
+    fun updatePlace(
+        placeId: String
+    ){
+        repository.updatePlace(
+            title = detailsUiState.title,
+            description = detailsUiState.place,
+            placeId = placeId,
+        ){
+            detailsUiState = detailsUiState.copy(updatedPlaceStatus = it)
+        }
+    }
+
     fun resetNoteAddedStatus(){
         detailsUiState = detailsUiState.copy(
             noteAddedStatus = false,
@@ -91,53 +138,17 @@ class DetailViewModel(
         )
     }
 
+    fun resetPlaceAddedStatus(){
+        detailsUiState = detailsUiState.copy(
+            placeAddedStatus = false,
+            updatedPlaceStatus = false
+        )
+    }
+
     fun resetState(){
         detailsUiState = DetailsUiState()
     }
 
-    /*
-       fun addPlace() {
-        if(hasUser){
-            repository.addPlace(
-                userId = user!!.uid,
-                title = detailsUiState.title,
-                description = detailsUiState.note,
-                timestamp = Timestamp.now()
-            ) {
-                detailsUiState = detailsUiState.copy(placeAddedStatus = it)
-            }
-        }
-    }
-    fun getPlace(placeId: String){
-        repository.getPlace(
-            placeId = placeId,
-            onError = {}
-        ) {
-            detailsUiState = detailsUiState.copy(selectedPlace = it)
-            detailsUiState.selectedPlace?.let { it1 -> setEditFieldsPlace(it1) }
-        }
-    }   fun addPlace() {
-        if(hasUser){
-            repository.addPlace(
-                userId = user!!.uid,
-                title = detailsUiState.title,
-                description = detailsUiState.note,
-                timestamp = Timestamp.now()
-            ) {
-                detailsUiState = detailsUiState.copy(placeAddedStatus = it)
-            }
-        }
-    }
-    fun getPlace(placeId: String){
-        repository.getPlace(
-            placeId = placeId,
-            onError = {}
-        ) {
-            detailsUiState = detailsUiState.copy(selectedPlace = it)
-            detailsUiState.selectedPlace?.let { it1 -> setEditFieldsPlace(it1) }
-        }
-    }
-     */
 
 }
 data class DetailsUiState(
@@ -147,6 +158,9 @@ data class DetailsUiState(
     val noteAddedStatus: Boolean = false,
     val updatedNoteStatus: Boolean = false,
     val selectedNote: Notes? = null,
+    val place: String = "",
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0,
     val placeAddedStatus: Boolean = false,
     val updatedPlaceStatus: Boolean = false,
     val selectedPlace: Places? = null

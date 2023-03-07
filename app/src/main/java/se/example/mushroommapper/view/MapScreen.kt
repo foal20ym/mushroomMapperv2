@@ -20,11 +20,13 @@ fun MapScreen(
     dataViewModel: DataViewModel = viewModel(),
 ) {
     val singapore = LatLng(1.35, 103.87)
-
+    val l1 = "1.30"
+    val l2 = "103.84"
     val places = listOf(
         Places("Singapore","Nice city", "cool city",1.36,103.87),
         Places("Singapore2","Nice city", "cool city",1.39,103.87),
         Places("Singapore3","Nice city", "cool city",1.42,103.87),
+        Places("Singapore4","Nice city", "cool city",l1.toDouble(),l2.toDouble()),
     )
 
     val getData = dataViewModel.state.value

@@ -167,11 +167,13 @@ class StorageRepository {
         userId: String,
         title: String,
         description: String,
+        latitude: Double,
+        longitude: Double,
         timestamp: Timestamp,
         onComplete: (Boolean) -> Unit,
     ){
         val documentId = placeRef.document().id
-        val place = Places(userId, title, description, latitude = 0.0, longitude = 0.0, timestamp, documentId = documentId)
+        val place = Places(userId, title, description, latitude, longitude, timestamp, documentId = documentId)
 
         placeRef
             .document(documentId)

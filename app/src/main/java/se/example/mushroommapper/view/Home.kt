@@ -7,9 +7,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,8 +15,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
+import com.google.type.LatLng
 import se.example.mushroommapper.data.Resources
 import se.example.mushroommapper.model.Notes
+import se.example.mushroommapper.model.Places
 import se.example.mushroommapper.view.Utils
 import se.example.mushroommapper.viewModel.HomeUIState
 import se.example.mushroommapper.viewModel.HomeViewModel
@@ -29,7 +28,7 @@ import java.util.*
 @Composable
 fun Home(
     homeViewModel: HomeViewModel?,
-    onNoteClick:(id:String) -> Unit,
+    onPlaceClick:(id:String) -> Unit,
     navToDetailPage:() -> Unit, // Ta bort sen
     navToLoginPage:() -> Unit, // Ta bort sen
 ){
@@ -39,7 +38,7 @@ fun Home(
         mutableStateOf(false)
     }
 
-    var selectedNote: Notes? by remember {
+    var selectedPlace: Places? by remember {
         mutableStateOf(null)
     }
 
@@ -48,7 +47,7 @@ fun Home(
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = Unit){
-        homeViewModel?.loadNotes()
+        homeViewModel?.loadPlaces()
     }
     
     
@@ -56,7 +55,7 @@ fun Home(
 
     ) { padding -> 
         Column(modifier = Modifier.padding(padding)) {
-            when(homeUIState.notesList){
+            when(homeUIState.placesList){
                 is Resources.Loading -> {
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -70,15 +69,15 @@ fun Home(
                         contentPadding = PaddingValues(16.dp),
                     ){
                         items(
-                            homeUIState.notesList.data ?: emptyList()
-                        ) { note ->
-                            NoteItem(notes = note,
+                            homeUIState.placesList.data ?: emptyList()
+                        ) { place ->
+                            PlaceItem(places = place,
                                 onLongClick = {
                                     openDialog = true
-                                    selectedNote = note
+                                    selectedPlace = place
                                 },
                             ) {
-                                onNoteClick.invoke(note.documentId)
+                                onPlaceClick.invoke(place.documentId)
                             }
                         }
                         
@@ -87,12 +86,12 @@ fun Home(
                         AlertDialog(onDismissRequest = {
                             openDialog = false
                         },
-                           title = { Text(text = "Delete Note?")},
+                           title = { Text(text = "Delete Place?")},
                            confirmButton = {
                                Button(
                                    onClick = {
-                                       selectedNote?.documentId?.let {
-                                           homeViewModel?.deleteNote(it)
+                                       selectedPlace?.documentId?.let {
+                                           homeViewModel?.deletePlace(it)
                                        }
                                        openDialog = false
                                    },
@@ -117,7 +116,7 @@ fun Home(
                 else -> {
                     Text(
                         text = homeUIState
-                            .notesList.throwable?.localizedMessage ?: "Unknown Error",
+                            .placesList.throwable?.localizedMessage ?: "Unknown Error",
                         color = Color.Red
                     )
                 }
@@ -133,6 +132,76 @@ fun Home(
     }
 
 }
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PlaceItem(
+    places: Places,
+    onLongClick:() -> Unit,
+    onClick:() -> Unit,
+){
+    Card(
+        modifier = Modifier
+            .combinedClickable(
+                onLongClick = { onLongClick.invoke() },
+                onClick = { onClick.invoke() }
+            )
+            .padding(8.dp)
+            .fillMaxWidth(),
+    ){
+        Column {
+            Text(
+                text = places.title,
+                style = MaterialTheme.typography.h6,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Clip,
+                modifier = Modifier.padding(4.dp)
+            )
+            Spacer(modifier = Modifier.size(4.dp))
+            CompositionLocalProvider(
+                LocalContentAlpha provides ContentAlpha.disabled
+            ) {
+                Text(
+                    text = places.description,
+                    style = MaterialTheme.typography.body1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(4.dp),
+                    maxLines = 4
+                )
+                Text(
+                    text = (com.google.android.gms.maps.model.LatLng(
+                        places.latitude,
+                        places.longitude
+                    )).toString(),
+                    style = MaterialTheme.typography.body1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(4.dp),
+                    maxLines = 4
+                )
+            }
+            Spacer(modifier = Modifier.size(4.dp))
+            CompositionLocalProvider(
+                LocalContentAlpha provides ContentAlpha.disabled
+            ) {
+                Text(
+                    text = formatDate(places.timestamp),
+                    style = MaterialTheme.typography.body1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .align(Alignment.End),
+                    maxLines = 4
+                )
+            }
+        }
+
+
+    }
+
+
+}
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -190,8 +259,6 @@ fun NoteItem(
 
 
     }
-
-
 }
 
 private fun formatDate(timestamp: Timestamp): String {
