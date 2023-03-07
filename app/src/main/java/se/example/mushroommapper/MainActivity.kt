@@ -1,6 +1,11 @@
 package se.example.mushroommapper
 
+import android.app.Application
+import android.content.pm.PackageManager
+import android.media.Image
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,13 +21,23 @@ import se.example.mushroommapper.ui.theme.MushroomMapperTheme
 
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+
+import dagger.hilt.android.HiltAndroidApp
 import se.example.mushroommapper.navigation.RootNavigationGraph
+import se.example.mushroommapper.view.CameraScreen
+import java.io.File
+import java.util.concurrent.Executor
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.jar.Manifest
 
 import androidx.activity.compose.setContent
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,6 +46,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.viewModel.HomeViewModel
 import se.example.mushroommapper.viewModel.MapViewModel
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

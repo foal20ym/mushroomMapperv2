@@ -3,9 +3,13 @@
 package se.example.mushroommapper.view
 
 import androidx.compose.foundation.layout.*
+
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -14,9 +18,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import se.example.mushroommapper.BottomBarScreen
 import se.example.mushroommapper.navigation.HomeNavGraph
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +33,17 @@ import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.navigation.Graph
 import se.example.mushroommapper.viewModel.HomeViewModel
 import se.example.mushroommapper.viewModel.MapViewModel
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
+import java.io.File
+import java.util.concurrent.ExecutorService
+import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
+import coil.compose.rememberAsyncImagePainter
+import se.example.mushroommapper.R
+import java.util.concurrent.Executors
 
 @Composable
 fun HomeScreen(
@@ -62,8 +81,10 @@ fun TopBar(navController: NavHostController) {
             }
         },
         actions = {
-            IconButton(onClick = {}) {
-                Icon(Icons.Filled.Phone, "backIcon")
+            IconButton(onClick = {
+                navController.navigate("CameraScreen")
+            }) {
+                Icon(Icons.Filled.PhotoCamera, "cameraIcon")
             }
         },
         backgroundColor = MaterialTheme.colors.primary,
