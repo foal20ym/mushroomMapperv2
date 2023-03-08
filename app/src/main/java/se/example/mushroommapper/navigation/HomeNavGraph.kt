@@ -67,7 +67,7 @@ fun HomeNavGraph(
             }
         }
         composable(route = BottomBarScreen.Map.route) {
-            MapScreen()
+            MapScreen(homeViewModel = homeViewModel)
         }
         composable(route = BottomBarScreen.Settings.route) {
             /*ScreenContent(
