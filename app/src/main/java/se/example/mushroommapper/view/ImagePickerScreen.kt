@@ -37,6 +37,14 @@ class ImageViewModel(
         imageUri = uri
     }
     val picker =
+
+    imageUri?.let{ uri ->
+            val d = File(uri.path)
+            val x:ExifInterface = ExifInterface(d)
+            x.getAttribute("TAG_DATETIME")
+            print(x)
+            Text(text = "${x}")
+        }
 }*/
 
 @Composable
@@ -57,14 +65,6 @@ fun ImagePicker() {
             Text(text= "Pick Image")
         }
         Spacer(modifier = Modifier.height(12.dp))
-
-        imageUri?.let{ uri ->
-            val d = File(uri.path)
-            val x:ExifInterface = ExifInterface(d)
-            x.getAttribute("TAG_DATETIME")
-            print(x)
-            Text(text = "${x}")
-        }
 
         imageUri?.let{
             if(Build.VERSION.SDK_INT < 28){
