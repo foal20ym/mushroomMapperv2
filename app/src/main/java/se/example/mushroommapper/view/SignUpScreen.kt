@@ -1,6 +1,7 @@
 package se.example.mushroommapper.view
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,6 +9,8 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -23,13 +26,20 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import se.example.mushroommapper.ui.theme.BACKGROUND_COLOR
+import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
+import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
 
 import kotlinx.coroutines.launch
+import se.example.mushroommapper.Extensions.ContentColorComponent
 import se.example.mushroommapper.R
 import se.example.mushroommapper.viewModel.SignUpViewModel
+import se.example.mushroommapper.viewModel.color
 
 
 @Composable
@@ -45,7 +55,10 @@ fun SignUpScreen(
     val context = LocalContext.current
     val state = viewModel.signUpState.collectAsState(initial = null)
 
-    Row() {
+    Row(
+        modifier = Modifier
+            .background(BACKGROUND_COLOR.color)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -53,44 +66,80 @@ fun SignUpScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Text(
                 text = "Mushroom Mapper",
-                style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 40.sp,)
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 40.sp
+                ),
+                color = NON_INTERACTABLE_COLOR.color,
+                textAlign = TextAlign.Center
             )
-
             Icon(Icons.Default.Star, contentDescription = "Star Icon")
 
             Text(
                 modifier = Modifier.padding(bottom = 10.dp),
                 text = "Create Account",
                 fontWeight = FontWeight.Bold,
-                fontSize = 35.sp,
+                fontSize = 20.sp,
+                color = NON_INTERACTABLE_COLOR.color
                 )
             Text(
                 text = "Enter your credential's to register",
                 fontWeight = FontWeight.Medium,
-                fontSize = 15.sp, color = Color.Gray,
+                fontSize = 15.sp,
+                color = NON_INTERACTABLE_COLOR.color
             )
             Spacer(modifier = Modifier.height(20.dp))
-            TextField(
-                label = { Text(text = "Email") },
-                value = email,
-                onValueChange = { email = it }
-            )
+            ContentColorComponent(contentColor = NON_INTERACTABLE_COLOR.color) {
+                TextField(
+                    label = {
+                        Text(
+                            text = "Email",
+                            color = INTERACTABLE_COLOR.color
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Enter your email address",
+                            color = INTERACTABLE_COLOR.color
+                        )
+                    },
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = "emailIcon"
+                        )
+                    },
+                    value = email,
+                    onValueChange = { email = it },
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                TextField(
+                    label = { Text(
+                        text = "Password",
+                        color = INTERACTABLE_COLOR.color
+                    ) },
+                    placeholder = { Text(
+                        text = "Enter your password",
+                        color = INTERACTABLE_COLOR.color
+                    )},
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Key,
+                            contentDescription = "passwordIcon"
+                        ) },
+                    value = password,
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    onValueChange = { password = it }
+                )
+            }
 
             Spacer(modifier = Modifier.height(20.dp))
-            TextField(
-                label = { Text(text = "Password") },
-                value = password,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                onValueChange = { password = it }
-            )
 
-
-
-            Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp),
             ) {
                 Button(
@@ -100,8 +149,7 @@ fun SignUpScreen(
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color.White,
-                        contentColor = Color.White
+                        backgroundColor = INTERACTABLE_COLOR.color,
                     ),
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
@@ -110,10 +158,8 @@ fun SignUpScreen(
                 ) {
                     Text(
                         text = "Sign Up",
-                        color = Color.Black,
-                        modifier = Modifier
-                            .padding(7.dp),
-
+                        color = NON_INTERACTABLE_COLOR.color,
+                        modifier = Modifier.padding(7.dp)
                     )
                 }
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
@@ -123,18 +169,26 @@ fun SignUpScreen(
                 }
             }
             Text(
+                modifier = Modifier.padding(top = 15.dp),
+                text = "Already have an account?",
+                fontWeight = FontWeight.Medium,
+                color = NON_INTERACTABLE_COLOR.color
+            )
+            Text(
                 modifier = Modifier
-                    .padding(15.dp)
                     .clickable {
                         onClick()
                     },
-                text = "Already Have an account? sign In",
-                fontWeight = FontWeight.Bold, color = Color.Black
+                text = "Sign In",
+                fontWeight = FontWeight.Bold,
+                color = INTERACTABLE_COLOR.color,
+                textDecoration = TextDecoration.Underline
             )
 
             Text(
+                modifier = Modifier.padding(top = 15.dp),
                 text = "Or connect with",
-                fontWeight = FontWeight.Medium, color = Color.Gray
+                color = NON_INTERACTABLE_COLOR.color
             )
             Row(
                 modifier = Modifier
@@ -148,6 +202,7 @@ fun SignUpScreen(
                         contentDescription = "Google Icon", tint = Color.Unspecified
                     )
                 }
+                Spacer(modifier = Modifier.width(20.dp))
                 IconButton(onClick = {
 
                 }) {
@@ -179,6 +234,8 @@ fun SignUpScreen(
         }
     }
 }
+
+
 
 /*
     Column(

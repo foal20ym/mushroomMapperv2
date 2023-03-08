@@ -37,11 +37,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.launch
+import se.example.mushroommapper.Extensions.ContentColorComponent
 import se.example.mushroommapper.R
 import se.example.mushroommapper.viewModel.SignInViewModel
 import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
 import se.example.mushroommapper.ui.theme.BACKGROUND_COLOR
 import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
+import se.example.mushroommapper.viewModel.color
 
 
 // Test2@gmail.com
@@ -90,7 +92,10 @@ fun SignInScreen(
             ) {
                 Text(
                     text = "Mushroom Mapper",
-                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 40.sp,),
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 40.sp
+                    ),
                     color = NON_INTERACTABLE_COLOR.color,
                     textAlign = TextAlign.Center
                 )
@@ -109,43 +114,58 @@ fun SignInScreen(
                     color = NON_INTERACTABLE_COLOR.color,
                 )
                 Spacer(modifier = Modifier.height(25.dp))
-                TextField(
-                    label = { Text(
-                        text = "Email",
-                        color = INTERACTABLE_COLOR.color
-                    ) },
-                    trailingIcon = {Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "emailIcon"
-                    )},
-                    value = email,
-                    placeholder = {Text(
-                        text = "Enter your email address",
-                        color = INTERACTABLE_COLOR.color
-                    )},
-                    onValueChange = { email = it },
-                )
 
+                ContentColorComponent(contentColor = NON_INTERACTABLE_COLOR.color) {
+                    TextField(
+                        label = {
+                            Text(
+                                text = "Email",
+                                color = INTERACTABLE_COLOR.color
+                            )
+                        },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Email,
+                                contentDescription = "emailIcon"
+                            )
+                        },
+                        value = email,
+                        placeholder = {
+                            Text(
+                                text = "Enter your email address",
+                                color = INTERACTABLE_COLOR.color
+                            )
+                        },
+                        onValueChange = { email = it },
+                    )
 
-                Spacer(modifier = Modifier.height(20.dp))
-                TextField(
-                    label = { Text(
-                        text = "Password",
-                        color = INTERACTABLE_COLOR.color
-                    ) },
-                    trailingIcon = {Icon(
-                        imageVector = Icons.Default.Key,
-                        contentDescription = "passwordIcon"
-                    )},
-                    placeholder = {Text(
-                        text = "Enter your password",
-                        color = INTERACTABLE_COLOR.color
-                    )},
-                    value = password,
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    onValueChange = { password = it }
-                )
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    TextField(
+                        label = {
+                            Text(
+                                text = "Password",
+                                color = INTERACTABLE_COLOR.color
+                            )
+                        },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Key,
+                                contentDescription = "passwordIcon"
+                            )
+                        },
+                        placeholder = {
+                            Text(
+                                text = "Enter your password",
+                                color = INTERACTABLE_COLOR.color
+                            )
+                        },
+                        value = password,
+                        visualTransformation = PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        onValueChange = { password = it }
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
                 Box(modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp)) {
@@ -185,6 +205,7 @@ fun SignInScreen(
                     text = AnnotatedString("Forgot password?"),
                     onClick = { onForgotClick() },
                     style = TextStyle(
+                        fontWeight = FontWeight.Bold,
                         fontSize = 17.sp,
                         fontFamily = FontFamily.Default,
                         textDecoration = TextDecoration.Underline,
@@ -206,18 +227,17 @@ fun SignInScreen(
                     text = AnnotatedString("Sign up"),
                     onClick = { onSignUpClick() },
                     style = TextStyle(
+                        fontWeight = FontWeight.Bold,
                         fontSize = 17.sp,
                         fontFamily = FontFamily.Default,
                         textDecoration = TextDecoration.Underline,
-                        color = INTERACTABLE_COLOR.color
+                        color = INTERACTABLE_COLOR.color,
                     )
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
-
                 Text(
+                    modifier = Modifier.padding(top = 15.dp),
                     text = "or connect with",
-                    fontWeight = FontWeight.Medium,
                     color = NON_INTERACTABLE_COLOR.color)
                 Row(
                     modifier = Modifier
@@ -296,8 +316,7 @@ fun SignInScreen(
 
 }
 
-val String.color
-    get() = Color(parseColor(this))
+
 
 /*
 Column(
