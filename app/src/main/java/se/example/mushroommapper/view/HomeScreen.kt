@@ -74,16 +74,7 @@ fun HomeScreen(
         Column(modifier = Modifier.padding(PaddingValues)){
             HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel)
         }
-        Column() {
-            Text( text = homeViewModel.homeUIState.placesList.data?.size.toString())
-            homeViewModel.homeUIState.placesList.data?.forEach { place ->
-                Text(
-                    text = place.title,
-                )
-            }
-        }
     }
-
 
 }
 
