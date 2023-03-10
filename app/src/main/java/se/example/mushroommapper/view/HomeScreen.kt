@@ -2,6 +2,7 @@
 
 package se.example.mushroommapper.view
 
+import android.content.ContentValues.TAG
 import androidx.compose.foundation.layout.*
 
 import android.content.pm.PackageManager
@@ -40,10 +41,23 @@ import java.io.File
 import java.util.concurrent.ExecutorService
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import coil.compose.rememberAsyncImagePainter
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import se.example.mushroommapper.R
+import se.example.mushroommapper.model.Places
 import java.util.concurrent.Executors
+import se.example.mushroommapper.ui.theme.BACKGROUND_COLOR
+import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
+import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
+import se.example.mushroommapper.viewModel.color
 
 @Composable
 fun HomeScreen(
@@ -60,7 +74,17 @@ fun HomeScreen(
         Column(modifier = Modifier.padding(PaddingValues)){
             HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel)
         }
+        Column() {
+            Text( text = homeViewModel.homeUIState.placesList.data?.size.toString())
+            homeViewModel.homeUIState.placesList.data?.forEach { place ->
+                Text(
+                    text = place.title,
+                )
+            }
+        }
     }
+
+
 }
 
 @Composable
@@ -87,7 +111,7 @@ fun TopBar(navController: NavHostController) {
                 Icon(Icons.Filled.PhotoCamera, "cameraIcon")
             }
         },
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = INTERACTABLE_COLOR.color,
         contentColor = Color.White,
         elevation = 10.dp
     )
