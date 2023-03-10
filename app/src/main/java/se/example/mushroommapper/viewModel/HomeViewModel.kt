@@ -25,7 +25,7 @@ class HomeViewModel(
     fun loadPlaces(){
         if(hasUser){
             if(userId.isNotBlank()){
-                getUserPlaces(userId)
+                getLastFiveUserPlaces(userId)
             }
         } else {
             homeUIState = homeUIState.copy(placesList = Resources.Error(
@@ -34,8 +34,8 @@ class HomeViewModel(
         }
     }
 
-    private fun getUserPlaces(userId: String) = viewModelScope.launch {
-        repository.getUserPlaces(userId).collect {
+    private fun getLastFiveUserPlaces(userId: String) = viewModelScope.launch {
+        repository.getLastFiveUserPlaces(userId).collect {
             homeUIState = homeUIState.copy(placesList = it)
         }
     }
