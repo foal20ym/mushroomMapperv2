@@ -45,6 +45,8 @@ fun Home(
 ){
     val homeUIState = homeViewModel?.homeUIState ?: HomeUIState()
 
+    val latestActivity = homeViewModel?.homeUIState?.placesList?.data
+
     var openDialog by remember {
         mutableStateOf(false)
     }
@@ -93,30 +95,52 @@ fun Home(
                         fontWeight = FontWeight.Bold
                     )
                 )
-                homeViewModel?.homeUIState?.placesList?.data?.forEach { place ->
+                if (latestActivity?.isNotEmpty() == true) {
+                    latestActivity?.forEach { place ->
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 5.dp)
+                                .clickable {
+                                    //TODO
+                                }
+                                .padding(top = 45.dp),
+                            text = "${place.title}",
+                            textAlign = TextAlign.Center,
+                            color = INTERACTABLE_COLOR.color,
+                            style = TextStyle(
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        )
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    //TODO
+                                },
+                            color = INTERACTABLE_COLOR.color,
+                            thickness = 1.dp
+                        )
+                    }
+                } else {
                     Text(
                         modifier = Modifier
-                            .padding(start = 5.dp)
-                            .clickable {
-                                //TODO
-                            }
-                            .padding(top = 45.dp),
-                        text = "${place.title}",
-                        textAlign = TextAlign.Center,
-                        color = INTERACTABLE_COLOR.color,
+                            .padding(top = 100.dp),
+                        text = "You have no activities to display.",
                         style = TextStyle(
                             fontSize = 25.sp,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
+                            color = NON_INTERACTABLE_COLOR.color
                         )
                     )
-                    Divider(
+                    Text(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                //TODO
-                            },
-                        color = INTERACTABLE_COLOR.color,
-                        thickness = 1.dp
+                            .padding(top = 25.dp, bottom = 150.dp),
+                        text = "To upload an event use the Camera or REPLACE in the header menu",
+                        style = TextStyle(
+                            fontSize = 15.sp,
+                            color = NON_INTERACTABLE_COLOR.color
+                        )
                     )
                 }
             }
