@@ -76,8 +76,11 @@ fun HomeNavGraph(
             )*/
             ImagePicker()
         }
-        composable("CameraScreen") {
+        composable(Graph.CAMERA) {
             CameraScreen(navController = navController)
+        }
+        composable(Graph.PHOTO) {
+            PhotoScreen(navController = navController)
         }
         detailsNavGraph(navController = navController)
     }

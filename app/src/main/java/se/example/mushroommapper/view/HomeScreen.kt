@@ -97,7 +97,7 @@ fun TopBar(navController: NavHostController) {
         },
         actions = {
             IconButton(onClick = {
-                navController.navigate("CameraScreen")
+                navController.navigate(Graph.CAMERA)
             }) {
                 Icon(Icons.Filled.PhotoCamera, "cameraIcon")
             }
