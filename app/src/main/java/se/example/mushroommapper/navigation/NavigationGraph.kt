@@ -42,6 +42,17 @@ fun NavGraphBuilder.NavigationGraph(
                 }
             )
         }
+
+        composable(route = Screens.ResetPasswordScreen.route){
+            ResetPasswordScreen(
+                onClick = {
+                    navController.navigate(Screens.SignInScreen.route)
+                },
+                onSignUpClick = {
+                    navController.navigate(Screens.SignUpScreen.route)
+                }
+            )
+        }
     }
 
 }
