@@ -79,12 +79,12 @@ fun SignInScreen(
 
 
 
-        Row(
+    Row(
+        modifier = Modifier
+            .background(color = BACKGROUND_COLOR.color)
+    ) {
+        Column(
             modifier = Modifier
-                .background(color = BACKGROUND_COLOR.color)
-        ) {
-            Column(
-                modifier = Modifier
                     .fillMaxSize()
                     .padding(20.dp),
                 verticalArrangement = Arrangement.Center,
