@@ -1,5 +1,7 @@
 package se.example.mushroommapper.data
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -41,6 +43,17 @@ class AuthRepositoryImpl @Inject constructor(
             emit(Resource.Success(result))
         }.catch {
             emit(Resource.Error(it.message.toString()))
+        }
+    }
+
+    override fun resetPassword(emailAddress: String): Flow<Resource<AuthResult>> {
+        return flow {
+            Firebase.auth.sendPasswordResetEmail(emailAddress)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful){
+                        Log.d(TAG, "Email sent")
+                    }
+                }
         }
     }
 
