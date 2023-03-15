@@ -1,6 +1,8 @@
-package se.example.mushroommapper.presentation
+package se.example.mushroommapper.viewModel
 
 import android.content.Context
+import android.net.Uri
+import android.util.Log
 import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
@@ -16,6 +18,17 @@ import javax.inject.Inject
 class CameraViewModel @Inject constructor(
     private val repo: CustomCameraRepo
 ): ViewModel() {
+   // private lateinit var photoUri: Uri
+
+    private var _photoUri: Uri? = null
+    val photoUri: Uri?
+        get() = _photoUri
+    /*fun getPhotoUri() {
+        viewModelScope.launch {
+            photoUri = repo.getPhotoUri()
+            Log.e("image", "$photoUri")
+        }
+    }*/
     fun showCameraPreview(
         previewView: PreviewView,
         lifecycleOwner: LifecycleOwner
@@ -27,7 +40,11 @@ class CameraViewModel @Inject constructor(
 
     fun captureAndSave(context: Context) {
         viewModelScope.launch {
-            repo.captureAndSaveImage(context)
+            repo.captureAndSaveImage(context, {uri ->
+                _photoUri = uri
+            }, {exception ->
+                //handle error
+            })
         }
     }
 }

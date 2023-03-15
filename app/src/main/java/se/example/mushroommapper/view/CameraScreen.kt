@@ -1,14 +1,6 @@
 package se.example.mushroommapper.view
 
-import android.content.Context
-import android.net.Uri
 import android.os.Build
-import android.util.Log
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -21,30 +13,23 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Lens
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import se.example.mushroommapper.presentation.CameraViewModel
-import java.io.File
-import java.text.SimpleDateFormat
+import se.example.mushroommapper.navigation.Graph
+import se.example.mushroommapper.viewModel.CameraViewModel
 import java.util.*
-import java.util.concurrent.Executor
-import java.util.jar.Manifest
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 /*
 @Composable
@@ -166,7 +151,9 @@ fun CameraScreen(viewModel: CameraViewModel = hiltViewModel(), navController: Na
                     previewView
                 }, modifier = Modifier.fillMaxSize())
             IconButton(onClick = {
-                                 viewModel.captureAndSave(context)
+                viewModel.captureAndSave(context)
+                navController.navigate(Graph.PHOTO)
+
             },
                 content = {
                     Icon(
@@ -179,6 +166,7 @@ fun CameraScreen(viewModel: CameraViewModel = hiltViewModel(), navController: Na
                             .border(1.dp, Color.White, CircleShape)
                     )
                 }
+
             )
         }
     }
