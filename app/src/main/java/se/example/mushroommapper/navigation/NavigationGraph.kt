@@ -6,6 +6,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import se.example.mushroommapper.view.SignInScreen
 import se.example.mushroommapper.view.SignUpScreen
+import se.example.mushroommapper.view.ResetPasswordScreen
+
 
 
 fun NavGraphBuilder.NavigationGraph(
@@ -25,7 +27,7 @@ fun NavGraphBuilder.NavigationGraph(
                     navController.navigate(Screens.SignUpScreen.route)
                 },
                 onForgotClick = {
-                    navController.navigate(AuthScreen.Forgot.route)
+                    navController.navigate(Screens.ResetPasswordScreen.route)
                 }
             )
         }
@@ -37,9 +39,6 @@ fun NavGraphBuilder.NavigationGraph(
                 },
                 onSignUpClick = {
                     navController.navigate(Screens.SignUpScreen.route)
-                },
-                onForgotClick = {
-                    navController.navigate(AuthScreen.Forgot.route)
                 }
             )
         }
