@@ -126,7 +126,8 @@ fun SignInScreen(
                         trailingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Email,
-                                contentDescription = "emailIcon"
+                                contentDescription = "emailIcon",
+                                tint = INTERACTABLE_COLOR.color
                             )
                         },
                         value = email,
@@ -151,7 +152,8 @@ fun SignInScreen(
                         trailingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Key,
-                                contentDescription = "passwordIcon"
+                                contentDescription = "passwordIcon",
+                                tint = INTERACTABLE_COLOR.color
                             )
                         },
                         placeholder = {
