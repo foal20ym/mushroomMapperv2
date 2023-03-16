@@ -1,5 +1,6 @@
 package se.example.mushroommapper.view
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,12 +11,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -29,20 +30,28 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
+import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.launch
 import se.example.mushroommapper.Extensions.ContentColorComponent
 import se.example.mushroommapper.R
 import se.example.mushroommapper.ui.theme.BACKGROUND_COLOR
 import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
 import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
 import se.example.mushroommapper.ui.theme.Purple700
+import se.example.mushroommapper.viewModel.ResetPasswordViewModel
+import se.example.mushroommapper.viewModel.SignInViewModel
 import se.example.mushroommapper.viewModel.color
 
 @Composable
 fun ResetPasswordScreen(
     onClick: () -> Unit,
     onSignUpClick: () -> Unit,
+    viewModel: ResetPasswordViewModel = hiltViewModel()
 ) {
-
+    var email by rememberSaveable { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val state = viewModel.resetPasswordState.collectAsState(initial = null)
     Row() {
         Column(
             modifier = Modifier
@@ -53,9 +62,6 @@ fun ResetPasswordScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
-
-            val email = remember { mutableStateOf(TextFieldValue()) }
-
             Text(
                 text = "Mushroom Mapper",
                 style = TextStyle(
@@ -84,8 +90,8 @@ fun ResetPasswordScreen(
                             color = INTERACTABLE_COLOR.color
                         )
                     },
-                    value = email.value,
-                    onValueChange = { email.value = it },
+                    value = email,
+                    onValueChange = { email = it },
                     placeholder = {
                         Text(
                             text = "Enter your email address",
@@ -107,7 +113,11 @@ fun ResetPasswordScreen(
             Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { /* TODO */ },
+                    onClick = {
+                        scope.launch {
+                            viewModel.resetPassword(email)
+                        }
+                    },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -158,7 +168,7 @@ fun ResetPasswordScreen(
             )
             ClickableText(
                 text = AnnotatedString("Sign in"),
-                onClick = { onSignUpClick() },
+                onClick = { onClick() },
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 17.sp,
@@ -167,6 +177,22 @@ fun ResetPasswordScreen(
                     color = INTERACTABLE_COLOR.color,
                 )
             )
+        }
+        LaunchedEffect(key1 = state.value?.isSuccess) {
+            scope.launch {
+                if (state.value?.isSuccess?.isNotEmpty() == true) {
+                    val success = state.value?.isSuccess
+                    Toast.makeText(context, "$success", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        LaunchedEffect(key1 = state.value?.isError) {
+            scope.launch {
+                if (state.value?.isError?.isNotBlank() == true) {
+                    val error = state.value?.isError
+                    Toast.makeText(context, "$error", Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 }

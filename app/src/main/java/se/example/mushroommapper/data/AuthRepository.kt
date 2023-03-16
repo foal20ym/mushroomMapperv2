@@ -8,4 +8,5 @@ interface AuthRepository {
     fun loginUser(email: String, password: String): Flow<Resource<AuthResult>>
     fun registerUser(email: String, password: String) : Flow<Resource<AuthResult>>
     fun googleSignIn(credential: AuthCredential): Flow<Resource<AuthResult>>
+    fun resetPassword(email: String): Flow<Resource<AuthResult>>
 }
