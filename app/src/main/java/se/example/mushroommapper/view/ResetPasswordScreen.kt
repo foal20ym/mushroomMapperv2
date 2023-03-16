@@ -1,5 +1,6 @@
 package se.example.mushroommapper.view
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -176,6 +177,22 @@ fun ResetPasswordScreen(
                     color = INTERACTABLE_COLOR.color,
                 )
             )
+        }
+        LaunchedEffect(key1 = state.value?.isSuccess) {
+            scope.launch {
+                if (state.value?.isSuccess?.isNotEmpty() == true) {
+                    val success = state.value?.isSuccess
+                    Toast.makeText(context, "$success", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        LaunchedEffect(key1 = state.value?.isError) {
+            scope.launch {
+                if (state.value?.isError?.isNotBlank() == true) {
+                    val error = state.value?.isError
+                    Toast.makeText(context, "$error", Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 }
