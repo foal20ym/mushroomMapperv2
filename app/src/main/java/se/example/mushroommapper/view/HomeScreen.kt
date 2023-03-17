@@ -25,6 +25,30 @@ import se.example.mushroommapper.navigation.Graph
 import se.example.mushroommapper.navigation.HomeNavGraph
 import se.example.mushroommapper.viewModel.HomeViewModel
 import se.example.mushroommapper.viewModel.MapViewModel
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
+import java.io.File
+import java.util.concurrent.ExecutorService
+import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import coil.compose.rememberAsyncImagePainter
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
+import se.example.mushroommapper.R
+import se.example.mushroommapper.model.Places
+import java.util.concurrent.Executors
+import se.example.mushroommapper.ui.theme.BACKGROUND_COLOR
+import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
+import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
+import se.example.mushroommapper.viewModel.color
 
 @Composable
 fun HomeScreen(
@@ -42,6 +66,7 @@ fun HomeScreen(
             HomeNavGraph(navController = navController, homeViewModel = homeViewModel, detailViewModel = detailViewModel)
         }
     }
+
 }
 
 @Composable
@@ -69,12 +94,12 @@ fun TopBar(navController: NavHostController) {
                 Icon(Icons.Default.Add, "AddIcon")
             }
             IconButton(onClick = {
-                navController.navigate("CameraScreen")
+                navController.navigate(Graph.CAMERA)
             }) {
                 Icon(Icons.Filled.PhotoCamera, "cameraIcon")
             }
         },
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = INTERACTABLE_COLOR.color,
         contentColor = Color.White,
         elevation = 10.dp
     )

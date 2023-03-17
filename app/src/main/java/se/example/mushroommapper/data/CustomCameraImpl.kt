@@ -7,10 +7,13 @@ import android.os.Build
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.camera.core.*
+import androidx.camera.core.ImageCapture.OnImageSavedCallback
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import se.example.mushroommapper.data.CustomCameraRepo
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -22,8 +25,11 @@ class CustomCameraImpl @Inject constructor(
     private val imageAnalysis: ImageAnalysis,
     private val imageCapture: ImageCapture
     ): CustomCameraRepo {
-    private lateinit var photoUri: Uri
-    override suspend fun captureAndSaveImage(context: Context) {
+    override suspend fun captureAndSaveImage(
+        context: Context,
+        onImageSavedCallback: (Uri) -> Unit,
+        onErrorCallback: (Exception) -> Unit
+    ) {
         val name = SimpleDateFormat(
             "yyyy-MM-dd-HH-mm-ss-SSS",
             Locale.ROOT
@@ -42,13 +48,14 @@ class CustomCameraImpl @Inject constructor(
             contentValues
         ).build()
 
+
         imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(context),
             object: ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     // uri for the picture
-                    photoUri = outputFileResults.savedUri!!
+                    onImageSavedCallback(outputFileResults.savedUri!!)
                     Toast.makeText(
                         context,
                         "Saved image ${outputFileResults.savedUri!!}",
@@ -57,6 +64,7 @@ class CustomCameraImpl @Inject constructor(
                 }
 
                 override fun onError(exception: ImageCaptureException) {
+                    onErrorCallback.invoke(exception)
                     Toast.makeText(
                         context,
                         "Error: ${exception.message!!}",
@@ -66,6 +74,7 @@ class CustomCameraImpl @Inject constructor(
             }
         )
     }
+
 
     override suspend fun showCameraPreview(
         previewView: PreviewView,

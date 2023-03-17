@@ -1,9 +1,13 @@
 package se.example.mushroommapper.data
 
+import android.content.ContentValues.TAG
+import android.nfc.Tag
+import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.channels.awaitClose
@@ -25,7 +29,7 @@ class StorageRepository {
     private val placeRef: CollectionReference = Firebase.firestore.collection(PLACES_COLLECTION_REF)
 
     fun getUserPlaces(
-        userId: String
+        userId: String,
     ):Flow<Resources<List<Places>>> = callbackFlow {
         var snapshotStateListener: ListenerRegistration? = null
 
@@ -34,16 +38,41 @@ class StorageRepository {
                 .orderBy("timestamp")
                 .whereEqualTo("userId", userId)
                 .addSnapshotListener { snapshot, e ->
-                    val response = if (snapshot != null){
+                    val response = if (snapshot != null) {
                         val places = snapshot.toObjects(Places::class.java)
                         Resources.Success(data = places)
                     } else {
                         Resources.Error(throwable = e?.cause)
                     }
-                    trySend( response )
-
+                    trySend(response)
                 }
+        }catch (e:Exception){
+            trySend( Resources.Error(e?.cause))
+            e.printStackTrace()
+        }
+        awaitClose {
+            snapshotStateListener?.remove()
+        }
+    }
 
+    fun getLastFiveUserPlaces(
+        userId: String,
+    ):Flow<Resources<List<Places>>> = callbackFlow {
+        var snapshotStateListener: ListenerRegistration? = null
+
+        try {
+            snapshotStateListener = placeRef
+                .orderBy("timestamp", Query.Direction.DESCENDING).limit(5)
+                .whereEqualTo("userId", userId)
+                .addSnapshotListener { snapshot, e ->
+                    val response = if (snapshot != null) {
+                        val places = snapshot.toObjects(Places::class.java)
+                        Resources.Success(data = places)
+                    } else {
+                        Resources.Error(throwable = e?.cause)
+                    }
+                    trySend(response)
+                }
         }catch (e:Exception){
             trySend( Resources.Error(e?.cause))
             e.printStackTrace()

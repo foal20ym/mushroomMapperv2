@@ -48,7 +48,7 @@ fun HomeNavGraph(
             }
         }
         // 1:28:32
-        composable(
+        /*composable(
             route = BottomBarScreen.Profile.route + "?id={id}",
             arguments = listOf(navArgument("id"){
                 type = NavType.StringType
@@ -61,6 +61,23 @@ fun HomeNavGraph(
             ) {
                 navController.navigateUp()
             }
+        }*/
+        composable(route = BottomBarScreen.Profile.route){
+            ProfileScreen(
+                homeViewModel = homeViewModel,
+                onPlaceClick = { placeId ->
+                    navController.navigate(
+                        BottomBarScreen.Profile.route + "?id=$placeId"
+                    ){
+                        launchSingleTop = true
+                    }
+                },
+                navToDetailPage = {
+                    navController.navigate(BottomBarScreen.Profile.route)
+                }
+            ) {
+
+            }
         }
         composable(route = BottomBarScreen.Map.route) {
             MapScreen(homeViewModel = homeViewModel)
@@ -68,7 +85,7 @@ fun HomeNavGraph(
         composable(route = BottomBarScreen.Settings.route) {
             ImagePicker()
         }
-        composable("CameraScreen") {
+        composable(Graph.CAMERA) {
             CameraScreen(navController = navController)
         }
         composable("ManuallyAddLocationScreen") {

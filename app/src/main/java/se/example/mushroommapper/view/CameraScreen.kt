@@ -14,6 +14,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Lens
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +28,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import se.example.mushroommapper.viewModel.CameraViewModel
+import se.example.mushroommapper.navigation.Graph
 import java.util.*
 
 /*
@@ -148,7 +151,9 @@ fun CameraScreen(viewModel: CameraViewModel = hiltViewModel(), navController: Na
                     previewView
                 }, modifier = Modifier.fillMaxSize())
             IconButton(onClick = {
-                                 viewModel.captureAndSave(context)
+                viewModel.captureAndSave(context)
+                navController.navigate(Graph.PHOTO)
+
             },
                 content = {
                     Icon(
@@ -161,6 +166,7 @@ fun CameraScreen(viewModel: CameraViewModel = hiltViewModel(), navController: Na
                             .border(1.dp, Color.White, CircleShape)
                     )
                 }
+
             )
         }
     }

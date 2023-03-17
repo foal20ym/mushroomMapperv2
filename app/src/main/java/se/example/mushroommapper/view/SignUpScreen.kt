@@ -41,7 +41,6 @@ import se.example.mushroommapper.viewModel.color
 fun SignUpScreen(
     onClick: () -> Unit,
     onSignUpClick: () -> Unit,
-    onForgotClick: () -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     var email by rememberSaveable { mutableStateOf("") }
@@ -103,7 +102,8 @@ fun SignUpScreen(
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Default.Email,
-                            contentDescription = "emailIcon"
+                            contentDescription = "emailIcon",
+                            tint = INTERACTABLE_COLOR.color
                         )
                     },
                     value = email,
@@ -124,7 +124,8 @@ fun SignUpScreen(
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Default.Key,
-                            contentDescription = "passwordIcon"
+                            contentDescription = "passwordIcon",
+                            tint = INTERACTABLE_COLOR.color
                         ) },
                     value = password,
                     visualTransformation = PasswordVisualTransformation(),
