@@ -9,10 +9,6 @@ import androidx.navigation.compose.composable
 import se.example.mushroommapper.BottomBarScreen
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.view.*
-import se.example.mushroommapper.view.CameraScreen
-import se.example.mushroommapper.view.MapScreen
-import se.example.mushroommapper.view.ScreenContent
-import se.example.mushroommapper.view.SignUpScreen
 import se.example.mushroommapper.viewModel.HomeViewModel
 
 @Composable

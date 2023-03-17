@@ -1,5 +1,6 @@
 package se.example.mushroommapper
 
+
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
@@ -11,21 +12,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
-import se.example.mushroommapper.ui.theme.MushroomMapperTheme
-
-
-import androidx.navigation.compose.rememberNavController
-
-import se.example.mushroommapper.navigation.RootNavigationGraph
-
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import se.example.mushroommapper.detail.DetailViewModel
+import se.example.mushroommapper.navigation.RootNavigationGraph
+import se.example.mushroommapper.ui.theme.MushroomMapperTheme
 import se.example.mushroommapper.viewModel.HomeViewModel
 import se.example.mushroommapper.viewModel.MapViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseUser
 import se.example.mushroommapper.data.StorageRepository
-import se.example.mushroommapper.model.Notes
 import se.example.mushroommapper.model.Places
 
 class DetailViewModel(

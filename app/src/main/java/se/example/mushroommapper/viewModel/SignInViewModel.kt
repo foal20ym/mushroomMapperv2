@@ -7,12 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import se.example.mushroommapper.data.AuthRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import se.example.mushroommapper.data.AuthRepository
 import se.example.mushroommapper.data.Resource
 import javax.inject.Inject
 

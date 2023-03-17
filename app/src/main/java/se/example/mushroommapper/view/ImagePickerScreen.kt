@@ -2,7 +2,6 @@ package se.example.mushroommapper.view
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -20,10 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toFile
-import androidx.lifecycle.ViewModel
-import java.io.File
-import java.net.URI
 
 /*
 class ImageViewModel(
