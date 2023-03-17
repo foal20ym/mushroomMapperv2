@@ -12,13 +12,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
-import se.example.mushroommapper.ApplicationViewModel
-import se.example.mushroommapper.LocationDetails
+import se.example.mushroommapper.LocationViewModel
+import se.example.mushroommapper.model.LocationDetails
 import se.example.mushroommapper.detail.DetailsUiState
-import java.util.concurrent.Executors
 
 private @Composable
 fun GPS(location: LocationDetails?) {
@@ -34,8 +34,8 @@ fun ManuallyAddLocationScreen(
     onNavigate:() -> Unit
 ){
 
-    val applicationViewModel = viewModel(modelClass = ApplicationViewModel::class.java)
-    val location by applicationViewModel.getLocationLiveData().observeAsState()
+    val locationViewModel = viewModel(modelClass = LocationViewModel::class.java)
+    val location by locationViewModel.getLocationLiveData().observeAsState()
 
 
     val detailsUiState = detailViewModel?.detailsUiState ?: DetailsUiState()
@@ -88,11 +88,16 @@ fun ManuallyAddLocationScreen(
                 }
             }
 
-
-            GPS(location)
+           /* GPS(location)
 
             Text(text="HELLO GPS HERE")
-            Text(text="${location}")
+            Text(text="Latitude: ${location?.latitude}")
+            Text(text="Longitude: ${location?.longitude}")
+
+            val lat = location?.latitude?.toDouble()
+            val lng = location?.longitude?.toDouble()
+
+            Text(text="lat: ${lat}, lng: $lng") */
 
             TextField(value = detailsUiState.title,
                 onValueChange = {
@@ -128,12 +133,26 @@ fun ManuallyAddLocationScreen(
                     .fillMaxWidth()
                     .padding(8.dp)
             )
-            Button(onClick = { /*TODO*/ 
-                
-            }) {
-                Text(text = "Get location by clicking here")
-            }
 
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = {
+                    val lat0: Double? = location?.latitude?.toDouble()
+                    val lng0: Double? = location?.longitude?.toDouble()
+                    val lat1: Double = String.format("%.3f", lat0).toDouble()
+                    val lat2: Double = String.format("%.2f", lat1).toDouble()
+                    val lng1: Double = String.format("%.3f", lng0).toDouble()
+                    val lng2: Double = String.format("%.2f", lng1).toDouble()
+
+                    detailViewModel?.onLatitudeChange(lat2.toString())
+                    detailViewModel?.onLongitudeChange(lng2.toString())
+
+                }) {
+                    Text(text = "Get the coordinates by clicking here")
+                }
+            }
         }
     }
 }

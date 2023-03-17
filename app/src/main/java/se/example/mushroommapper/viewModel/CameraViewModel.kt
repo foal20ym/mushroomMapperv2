@@ -1,14 +1,13 @@
-package se.example.mushroommapper.presentation
+package se.example.mushroommapper.viewModel
 
 import android.content.Context
-import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import se.example.mushroommapper.domain.repository.CustomCameraRepo
+import se.example.mushroommapper.data.CustomCameraRepo
 import javax.inject.Inject
 
 

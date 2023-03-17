@@ -6,7 +6,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext
 import org.koin.core.logger.Level
-import se.example.mushroommapper.model.appModule
+import se.example.mushroommapper.dependencyInjections.appModule
+
 
 @HiltAndroidApp
 class ApplicationFirebaseAuth: Application() {

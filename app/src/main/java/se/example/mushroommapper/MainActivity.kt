@@ -9,11 +9,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
-import androidx.core.location.LocationManagerCompat.requestLocationUpdates
 import se.example.mushroommapper.ui.theme.MushroomMapperTheme
 
 
@@ -34,7 +31,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : ComponentActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val applicationViewModel : ApplicationViewModel by viewModel<ApplicationViewModel>()
+    private val locationViewModel : LocationViewModel by viewModel<LocationViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +40,7 @@ class MainActivity : ComponentActivity() {
             val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
             val detailViewModel = viewModel(modelClass = DetailViewModel::class.java)
             val mapViewModel = viewModel(modelClass = MapViewModel::class.java)
-            val applicationViewModel = viewModel(modelClass = ApplicationViewModel::class.java)
+            val locationViewModel = viewModel(modelClass = LocationViewModel::class.java)
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             //val detailViewModel = viewModel(modelClass = DetailViewModel::class.java)
             MushroomMapperTheme {
@@ -74,7 +71,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun requestLocationUpdates() {
-        applicationViewModel.startLocationUpdates()
+        locationViewModel.startLocationUpdates()
     }
 }
 /*
@@ -96,6 +93,7 @@ class MainActivity : ComponentActivity() {
 }
 
 */
+
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")

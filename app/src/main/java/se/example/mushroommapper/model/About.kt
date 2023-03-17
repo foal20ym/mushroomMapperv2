@@ -1,4 +1,4 @@
-package se.example.mushroommapper.firestore
+package se.example.mushroommapper.model
 
 data class About(
     val name: String = "",
