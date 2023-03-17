@@ -1,4 +1,4 @@
-package se.example.mushroommapper.data.repository
+package se.example.mushroommapper.data
 
 import android.content.ContentValues
 import android.content.Context
@@ -12,7 +12,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import se.example.mushroommapper.domain.repository.CustomCameraRepo
+import se.example.mushroommapper.data.CustomCameraRepo
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*

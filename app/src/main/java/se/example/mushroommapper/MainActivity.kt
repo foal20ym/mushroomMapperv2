@@ -1,61 +1,44 @@
 package se.example.mushroommapper
 
-import android.app.Application
-import android.content.pm.PackageManager
-import android.media.Image
-import android.net.Uri
+
+import android.Manifest
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import se.example.mushroommapper.ui.theme.MushroomMapperTheme
-
-
-
-import androidx.activity.compose.setContent
-import androidx.navigation.compose.rememberNavController
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
-
-import dagger.hilt.android.HiltAndroidApp
-import se.example.mushroommapper.navigation.RootNavigationGraph
-import se.example.mushroommapper.view.CameraScreen
-import java.io.File
-import java.util.concurrent.Executor
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.jar.Manifest
-
-import androidx.activity.compose.setContent
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavOptions
+import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import se.example.mushroommapper.detail.DetailViewModel
+import se.example.mushroommapper.navigation.RootNavigationGraph
+import se.example.mushroommapper.ui.theme.MushroomMapperTheme
 import se.example.mushroommapper.viewModel.HomeViewModel
 import se.example.mushroommapper.viewModel.MapViewModel
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val locationViewModel : LocationViewModel by viewModel<LocationViewModel>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
             val detailViewModel = viewModel(modelClass = DetailViewModel::class.java)
             val mapViewModel = viewModel(modelClass = MapViewModel::class.java)
+            val locationViewModel = viewModel(modelClass = LocationViewModel::class.java)
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             //val detailViewModel = viewModel(modelClass = DetailViewModel::class.java)
             MushroomMapperTheme {
                 RootNavigationGraph(
@@ -64,12 +47,28 @@ class MainActivity : ComponentActivity() {
                     homeViewModel = homeViewModel,
                     mapViewModel = mapViewModel
                 )
-                /*Navigation(
-                    detailViewModel = detailViewModel,
-                    homeViewModel = homeViewModel
-                )*/
+                prepLocationUpdates()
             }
         }
+    }
+    private fun prepLocationUpdates() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
+            requestLocationUpdates()
+        } else {
+            requestSinglePermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+    private val requestSinglePermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            isGranted ->
+        if (isGranted) {
+            requestLocationUpdates()
+        } else {
+            Toast.makeText(this, "GPS Unavailable", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun requestLocationUpdates() {
+        locationViewModel.startLocationUpdates()
     }
 }
 /*
@@ -91,6 +90,7 @@ class MainActivity : ComponentActivity() {
 }
 
 */
+
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")

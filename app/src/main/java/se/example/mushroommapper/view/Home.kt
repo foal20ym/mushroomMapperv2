@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.Timestamp
-import com.google.type.LatLng
 import se.example.mushroommapper.data.Resources
 import se.example.mushroommapper.model.Notes
 import se.example.mushroommapper.model.Places

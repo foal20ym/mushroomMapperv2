@@ -9,10 +9,6 @@ import androidx.navigation.compose.composable
 import se.example.mushroommapper.BottomBarScreen
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.view.*
-import se.example.mushroommapper.view.CameraScreen
-import se.example.mushroommapper.view.MapScreen
-import se.example.mushroommapper.view.ScreenContent
-import se.example.mushroommapper.view.SignUpScreen
 import se.example.mushroommapper.viewModel.HomeViewModel
 
 @Composable
@@ -52,7 +48,7 @@ fun HomeNavGraph(
             }
         }
         // 1:28:32
-        composable(
+        /*composable(
             route = BottomBarScreen.Profile.route + "?id={id}",
             arguments = listOf(navArgument("id"){
                 type = NavType.StringType
@@ -65,22 +61,37 @@ fun HomeNavGraph(
             ) {
                 navController.navigateUp()
             }
+        }*/
+        composable(route = BottomBarScreen.Profile.route){
+            ProfileScreen(
+                homeViewModel = homeViewModel,
+                onPlaceClick = { placeId ->
+                    navController.navigate(
+                        BottomBarScreen.Profile.route + "?id=$placeId"
+                    ){
+                        launchSingleTop = true
+                    }
+                },
+                navToDetailPage = {
+                    navController.navigate(BottomBarScreen.Profile.route)
+                }
+            ) {
+
+            }
         }
         composable(route = BottomBarScreen.Map.route) {
             MapScreen(homeViewModel = homeViewModel)
         }
         composable(route = BottomBarScreen.Settings.route) {
-            /*ScreenContent(
-                name = BottomBarScreen.Settings.route,
-                onClick = { }
-            )*/
             ImagePicker()
         }
         composable(Graph.CAMERA) {
             CameraScreen(navController = navController)
         }
-        composable(Graph.PHOTO) {
-            PhotoScreen(navController = navController)
+        composable("ManuallyAddLocationScreen") {
+            ManuallyAddLocationScreen(detailViewModel = detailViewModel){
+                navController.navigateUp()
+            }
         }
         detailsNavGraph(navController = navController)
     }

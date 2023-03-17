@@ -1,6 +1,5 @@
 package se.example.mushroommapper.view
 
-import android.graphics.Color.parseColor
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,10 +38,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.launch
 import se.example.mushroommapper.Extensions.ContentColorComponent
 import se.example.mushroommapper.R
-import se.example.mushroommapper.viewModel.SignInViewModel
-import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
 import se.example.mushroommapper.ui.theme.BACKGROUND_COLOR
+import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
 import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
+import se.example.mushroommapper.viewModel.SignInViewModel
 import se.example.mushroommapper.viewModel.color
 
 

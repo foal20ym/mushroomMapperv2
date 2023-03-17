@@ -10,3 +10,4 @@ data class Notes(
     val colorIndex: Int = 0,
     val documentId: String = ""
 )
+

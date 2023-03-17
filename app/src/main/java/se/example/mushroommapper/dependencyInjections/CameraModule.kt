@@ -1,20 +1,15 @@
 package se.example.mushroommapper.dependencyInjections
 
 import android.app.Application
-import androidx.camera.core.AspectRatio
-import androidx.camera.core.CameraProvider
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.*
 import androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import se.example.mushroommapper.data.repository.CustomCameraImpl
-import se.example.mushroommapper.domain.repository.CustomCameraRepo
+import se.example.mushroommapper.data.CustomCameraImpl
+import se.example.mushroommapper.data.CustomCameraRepo
 import javax.inject.Singleton
 
 @Module

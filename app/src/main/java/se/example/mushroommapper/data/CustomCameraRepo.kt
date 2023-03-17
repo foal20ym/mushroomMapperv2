@@ -1,4 +1,4 @@
-package se.example.mushroommapper.domain.repository
+package se.example.mushroommapper.data
 
 import android.content.Context
 import android.net.Uri

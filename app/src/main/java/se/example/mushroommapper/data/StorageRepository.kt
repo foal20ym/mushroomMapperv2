@@ -13,7 +13,6 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import se.example.mushroommapper.model.Notes
 import se.example.mushroommapper.model.Places
 
 

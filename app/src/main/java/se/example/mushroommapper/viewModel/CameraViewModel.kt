@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import se.example.mushroommapper.domain.repository.CustomCameraRepo
+import se.example.mushroommapper.data.CustomCameraRepo
 import javax.inject.Inject
 
 
