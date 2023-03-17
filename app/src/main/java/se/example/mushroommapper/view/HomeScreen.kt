@@ -41,6 +41,7 @@ import java.util.concurrent.ExecutorService
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.filled.Add
 import coil.compose.rememberAsyncImagePainter
 import se.example.mushroommapper.R
 import java.util.concurrent.Executors
@@ -80,7 +81,13 @@ fun TopBar(navController: NavHostController) {
                 Icon(Icons.Filled.ArrowBack, "backIcon")
             }
         },
+
         actions = {
+            IconButton(onClick = {
+                navController.navigate("ManuallyAddLocationScreen")
+            }) {
+                Icon(Icons.Default.Add, "AddIcon")
+            }
             IconButton(onClick = {
                 navController.navigate("CameraScreen")
             }) {

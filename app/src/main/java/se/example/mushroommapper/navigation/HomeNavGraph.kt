@@ -70,14 +70,15 @@ fun HomeNavGraph(
             MapScreen(homeViewModel = homeViewModel)
         }
         composable(route = BottomBarScreen.Settings.route) {
-            /*ScreenContent(
-                name = BottomBarScreen.Settings.route,
-                onClick = { }
-            )*/
             ImagePicker()
         }
         composable("CameraScreen") {
             CameraScreen(navController = navController)
+        }
+        composable("ManuallyAddLocationScreen") {
+            ManuallyAddLocationScreen(detailViewModel = detailViewModel){
+                navController.navigateUp()
+            }
         }
         detailsNavGraph(navController = navController)
     }
