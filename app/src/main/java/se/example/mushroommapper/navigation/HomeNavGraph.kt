@@ -83,7 +83,7 @@ fun HomeNavGraph(
             MapScreen(homeViewModel = homeViewModel)
         }
         composable(route = BottomBarScreen.Settings.route) {
-            ImagePicker()
+            ImagePicker(detailViewModel = detailViewModel)
         }
         composable(Graph.CAMERA) {
             CameraScreen(navController = navController)

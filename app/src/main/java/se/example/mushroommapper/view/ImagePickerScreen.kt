@@ -19,31 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import se.example.mushroommapper.detail.DetailViewModel
 
-/*
-class ImageViewModel(
-
-) : ViewModel(){
-    var imageUri = { mutableStateOf<Uri?>(null) }
-
-    val bitmap =  { mutableStateOf<Bitmap?>(null)}
-
-    val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) {uri: Uri? ->
-        imageUri = uri
-    }
-    val picker =
-
-    imageUri?.let{ uri ->
-            val d = File(uri.path)
-            val x:ExifInterface = ExifInterface(d)
-            x.getAttribute("TAG_DATETIME")
-            print(x)
-            Text(text = "${x}")
-        }
-}*/
 
 @Composable
-fun ImagePicker() {
+fun ImagePicker(
+    detailViewModel: DetailViewModel?,
+) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var uri2: Uri?
     val context = LocalContext.current
@@ -75,8 +57,16 @@ fun ImagePicker() {
                     contentDescription = null,
                     modifier = Modifier.size(400.dp))
             }
-
         }
+
+        Button(
+            onClick = {
+                detailViewModel?.addImage(imageUri!!)
+            }
+        ){
+            Text(text = "Upload")
+        }
+
     }
 
 }

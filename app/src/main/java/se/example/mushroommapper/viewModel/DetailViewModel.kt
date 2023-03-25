@@ -1,5 +1,6 @@
 package se.example.mushroommapper.detail
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -45,6 +46,20 @@ class DetailViewModel(
         }
     }
 
+    fun addImage(
+        path: Uri
+    ){
+        if(hasUser){
+            repository.addImage(
+                path = path,
+                timeStamp = Timestamp.now(),
+                userId = user!!.uid
+            ) {
+                detailsUiState = detailsUiState.copy(placeAddedStatus = it)
+            }
+        }
+    }
+
     fun addPlace() {
 
         if(hasUser){
@@ -55,9 +70,7 @@ class DetailViewModel(
                 latitude = detailsUiState.latitude!!,
                 longitude = detailsUiState.longitude!!,
                 timestamp = Timestamp.now()
-            ) {
-                detailsUiState = detailsUiState.copy(placeAddedStatus = it)
-            }
+            ) {}
         }
     }
 
