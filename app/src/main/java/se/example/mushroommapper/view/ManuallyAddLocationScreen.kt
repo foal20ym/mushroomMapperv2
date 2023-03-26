@@ -17,10 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import se.example.mushroommapper.LocationViewModel
+import se.example.mushroommapper.R
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.detail.DetailsUiState
 import se.example.mushroommapper.model.LocationDetails
@@ -35,9 +37,9 @@ fun GPS(location: LocationDetails?) {
 
 @Composable
 fun ManuallyAddLocationScreen(
-    detailViewModel: DetailViewModel?, // optional?? eller inte?
+    detailViewModel: DetailViewModel?,
     onNavigate:() -> Unit
-){
+) {
 
     val locationViewModel = viewModel(modelClass = LocationViewModel::class.java)
     val location by locationViewModel.getLocationLiveData().observeAsState()
@@ -71,52 +73,45 @@ fun ManuallyAddLocationScreen(
             }
         },
     ) { padding ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.White)
-            .padding(padding)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.White)
+                .padding(padding)
         ) {
-            if(detailsUiState.placeAddedStatus){
+            if (detailsUiState.placeAddedStatus) {
+                val msg = stringResource(id = R.string.AddedPlaceSuccessfully)
                 scope.launch {
                     scaffoldState.snackbarHostState
-                        .showSnackbar("Added Place Successfully")
+                        .showSnackbar(msg)
                     detailViewModel?.resetPlaceAddedStatus()
                     onNavigate.invoke()
                 }
             }
-            if(detailsUiState.updatedPlaceStatus){
+            if (detailsUiState.updatedPlaceStatus) {
+                val msg = stringResource(id = R.string.PlaceUpdatedSuccessfully)
                 scope.launch {
                     scaffoldState.snackbarHostState
-                        .showSnackbar("Place updated successfully")
+                        .showSnackbar(msg)
                     detailViewModel?.resetPlaceAddedStatus()
                     onNavigate.invoke()
                 }
             }
 
-           /* GPS(location)
-
-            Text(text="HELLO GPS HERE")
-            Text(text="Latitude: ${location?.latitude}")
-            Text(text="Longitude: ${location?.longitude}")
-
-            val lat = location?.latitude?.toDouble()
-            val lng = location?.longitude?.toDouble()
-
-            Text(text="lat: ${lat}, lng: $lng") */
-
-            TextField(value = detailsUiState.title,
+            TextField(
+                value = detailsUiState.title,
                 onValueChange = {
                     detailViewModel?.onTitleChange(it)
                 },
-                label = { Text(text = "Title")},
+                label = { Text(text = stringResource(id = R.string.Title)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
             )
             TextField(
                 value = detailsUiState.place,
-                onValueChange = { detailViewModel?.onPlaceChange(it)},
-                label = { Text(text = "Description")},
+                onValueChange = { detailViewModel?.onPlaceChange(it) },
+                label = { Text(text = stringResource(id = R.string.Description)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
@@ -124,16 +119,16 @@ fun ManuallyAddLocationScreen(
 
             TextField(
                 value = if (detailsUiState.latitude == null) "" else detailsUiState.latitude.toString(),
-                onValueChange = { detailViewModel?.onLatitudeChange(it)},
-                label = { Text(text = "Latitude")},
+                onValueChange = { detailViewModel?.onLatitudeChange(it) },
+                label = { Text(text = "Latitude") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
             )
             TextField(
                 value = if (detailsUiState.longitude == null) "" else detailsUiState.longitude.toString(),
-                onValueChange = { detailViewModel?.onLongitudeChange(it)},
-                label = { Text(text = "Longitude")},
+                onValueChange = { detailViewModel?.onLongitudeChange(it) },
+                label = { Text(text = "Longitude") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
@@ -144,22 +139,20 @@ fun ManuallyAddLocationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(onClick = {
-                    val lat0: Double? = location?.latitude?.toDouble()
-                    val lng0: Double? = location?.longitude?.toDouble()
-                    val lat1: Double = String.format("%.3f", lat0).toDouble()
-                    val lat2: Double = String.format("%.2f", lat1).toDouble()
-                    val lng1: Double = String.format("%.3f", lng0).toDouble()
-                    val lng2: Double = String.format("%.2f", lng1).toDouble()
+                    var lat: Double? = location?.latitude?.toDouble()
+                    var lng: Double? = location?.longitude?.toDouble()
 
-                    detailViewModel?.onLatitudeChange(lat2.toString())
-                    detailViewModel?.onLongitudeChange(lng2.toString())
+
+                    detailViewModel?.onLatitudeChange(lat.toString())
+                    detailViewModel?.onLongitudeChange(lng.toString())
 
                 }) {
-                    Text(text = "Get the coordinates by clicking here")
+                    Text(text = stringResource(id = R.string.GetCoordinates))
                 }
             }
         }
     }
 }
+
 
 

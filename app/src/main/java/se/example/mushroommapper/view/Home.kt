@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.Timestamp
+import se.example.mushroommapper.R
 import se.example.mushroommapper.data.Resources
 import se.example.mushroommapper.model.Notes
 import se.example.mushroommapper.model.Places
@@ -39,8 +41,8 @@ import java.util.*
 fun Home(
     homeViewModel: HomeViewModel?,
     onPlaceClick:(id:String) -> Unit,
-    navToDetailPage:() -> Unit, // Ta bort sen
-    navToLoginPage:() -> Unit, // Ta bort sen
+    navToDetailPage:() -> Unit,
+    navToLoginPage:() -> Unit,
 ){
     val homeUIState = homeViewModel?.homeUIState ?: HomeUIState()
 
@@ -87,45 +89,87 @@ fun Home(
             ) {
 
                 Text(
-                    text = "Latest Activity",
+                    text = stringResource(id = R.string.LatestActivity),
                     style = TextStyle(
                         color = NON_INTERACTABLE_COLOR.color,
                         fontSize = 35.sp,
                         fontWeight = FontWeight.Bold
                     )
                 )
+
                 if (latestActivity?.isNotEmpty() == true) {
-                    latestActivity?.forEach { place ->
-                        Text(
-                            modifier = Modifier
-                                .padding(start = 5.dp)
-                                .clickable {
-                                    //TODO
-                                }
-                                .padding(top = 45.dp),
-                            text = "${place.title}",
-                            textAlign = TextAlign.Center,
-                            color = INTERACTABLE_COLOR.color,
-                            style = TextStyle(
-                                fontSize = 25.sp,
-                                fontWeight = FontWeight.Medium
+                    when(homeUIState.placesList){
+                        is Resources.Loading -> {
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .wrapContentSize(align = Alignment.Center)
                             )
-                        )
-                        Divider(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    //TODO
+                        }
+                        is Resources.Success -> {
+                            LazyVerticalGrid(
+                                columns = GridCells.Fixed(1),
+                                contentPadding = PaddingValues(16.dp),
+                            ){
+                                items(
+                                    homeUIState.placesList.data ?: emptyList()
+                                ) { place ->
+                                    PlaceItem(places = place,
+                                        onLongClick = {
+                                            openDialog = true
+                                            selectedPlace = place
+                                        },
+                                    ) {
+                                        onPlaceClick.invoke(place.documentId)
+                                    }
+                                }
+
+                            }
+                            AnimatedVisibility(visible = openDialog) {
+                                AlertDialog(onDismissRequest = {
+                                    openDialog = false
                                 },
-                            color = INTERACTABLE_COLOR.color,
-                            thickness = 1.dp
-                        )
+                                    title = { Text(text = "Delete Place?")},
+                                    confirmButton = {
+                                        Button(
+                                            onClick = {
+                                                selectedPlace?.documentId?.let {
+                                                    homeViewModel?.deletePlace(it)
+                                                }
+                                                openDialog = false
+                                            },
+                                            colors = ButtonDefaults.buttonColors(
+                                                backgroundColor = Color.Red
+                                            ),
+                                        ) {
+                                            Text(text = "Delete")
+                                        }
+                                    },
+                                    dismissButton = {
+                                        Button(onClick = { openDialog = false }) {
+                                            Text(text = "Cancel")
+                                        }
+                                    }
+                                )
+
+
+
+                            }
+                        }
+                        else -> {
+                            Text(
+                                text = homeUIState
+                                    .placesList.throwable?.localizedMessage ?: "Unknown Error",
+                                color = Color.Red
+                            )
+                        }
+
                     }
                 } else {
                     Text(
                         modifier = Modifier
                             .padding(top = 100.dp),
-                        text = "You have no activities to display.",
+                        text = stringResource(id = R.string.NoLatestActivity),
                         style = TextStyle(
                             fontSize = 25.sp,
                             fontWeight = FontWeight.Medium,
@@ -135,7 +179,7 @@ fun Home(
                     Text(
                         modifier = Modifier
                             .padding(top = 25.dp, bottom = 150.dp),
-                        text = "To upload an event use the Camera or REPLACE in the header menu",
+                        text = stringResource(id = R.string.ToUploadAnEventUseCamera),
                         style = TextStyle(
                             fontSize = 15.sp,
                             color = NON_INTERACTABLE_COLOR.color

@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -71,7 +72,7 @@ fun ResetPasswordScreen(
 
             Spacer(modifier = Modifier.height(35.dp))
             Text(
-                text = "Enter your email address to recover your password",
+                text = stringResource(id = R.string.RevoveryEmail),
                 style = TextStyle(
                     fontSize = 15.sp,
                     fontFamily = FontFamily.Default,
@@ -92,7 +93,7 @@ fun ResetPasswordScreen(
                     onValueChange = { email = it },
                     placeholder = {
                         Text(
-                            text = "Enter your email address",
+                            text = stringResource(id = R.string.EnterEmail),
                             color = INTERACTABLE_COLOR.color
                         )
                     },
@@ -125,14 +126,14 @@ fun ResetPasswordScreen(
                     ),
                 ) {
                     Text(
-                        text = "Reset Password",
+                        text = stringResource(id = R.string.ResetPassword),
                         color = NON_INTERACTABLE_COLOR.color
                     )
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
             Text(
-                text = "Don't have an account?",
+                text = stringResource(id = R.string.DontHaveAccount),
                 style = TextStyle(
 
                     fontWeight = FontWeight.Medium,
@@ -142,7 +143,7 @@ fun ResetPasswordScreen(
                 )
             )
             ClickableText(
-                text = AnnotatedString("Sign up"),
+                text = AnnotatedString(stringResource(id = R.string.SignUp)),
                 onClick = { onSignUpClick() },
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
@@ -155,7 +156,7 @@ fun ResetPasswordScreen(
             Spacer( modifier = Modifier.height(20.dp))
             Spacer(modifier = Modifier.height(20.dp))
             Text(
-                text = "If you want to try login in again go to",
+                text = stringResource(id = R.string.tryLoginAgain),
                 style = TextStyle(
 
                     fontWeight = FontWeight.Medium,
@@ -165,7 +166,7 @@ fun ResetPasswordScreen(
                 )
             )
             ClickableText(
-                text = AnnotatedString("Sign in"),
+                text = AnnotatedString(stringResource(id = R.string.SignIn)),
                 onClick = { onClick() },
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,

@@ -21,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
+import se.example.mushroommapper.R
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
 import se.example.mushroommapper.viewModel.color
@@ -67,7 +69,7 @@ fun ImagePicker(
             Button(onClick = {
                 launcher.launch("image/*")
             }) {
-                Text(text = "Pick Image")
+                Text(text = stringResource(id = R.string.PickImage))
             }
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -94,12 +96,12 @@ fun ImagePicker(
                     detailViewModel?.addImage(imageUri!!)
                 }
             ) {
-                Text(text = "Upload")
+                Text(text = stringResource(id = R.string.Upload))
             }
         } else {
             if(Build.VERSION.SDK_INT < LOWEST_PERMISSION_SDK_VALUE) {
                 Text(
-                    text = "Please grant access to files in settings",
+                    text = stringResource(id = R.string.PleaseGiveAccessToFiles),
                     style = TextStyle(
                         color = NON_INTERACTABLE_COLOR.color,
                         fontSize = 40.sp,
@@ -107,7 +109,7 @@ fun ImagePicker(
                 )
             } else {
                 Text(
-                    text = "Please grant access to images in settings",
+                    text = stringResource(id = R.string.PleaseGiveAccessToImages),
                     style = TextStyle(
                         color = NON_INTERACTABLE_COLOR.color,
                         fontSize =  40.sp

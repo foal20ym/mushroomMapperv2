@@ -21,12 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import se.example.mushroommapper.R
 import se.example.mushroommapper.viewModel.CameraViewModel
 import se.example.mushroommapper.navigation.Graph
 import java.util.*
@@ -158,7 +160,7 @@ fun CameraScreen(viewModel: CameraViewModel = hiltViewModel(), navController: Na
                 content = {
                     Icon(
                         imageVector = Icons.Sharp.Lens,
-                        contentDescription = "Take photo",
+                        contentDescription = stringResource(id = R.string.TakePhoto),
                         tint = Color.White,
                         modifier = Modifier
                             .size(100.dp)
