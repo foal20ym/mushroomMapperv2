@@ -12,6 +12,7 @@ import se.example.mushroommapper.model.Places
 
 class MapViewModel(
     private val repository: StorageRepository = StorageRepository(),
+    //private val authRepository: AuthRepositoryImpl // Lägg till? testa om det funkar med ev
 ): ViewModel() {
     var homeUIState by mutableStateOf(HomeUIState())
 
@@ -42,6 +43,10 @@ class MapViewModel(
     fun deletePlace(placeId: String) = repository.deletePlace(placeId){
         homeUIState = homeUIState.copy(placeDeletedStatus = it)
     }
+
+    //fun signOut() = authRepository.signOut()
+
+
 }
 
 data class MapUIState(
