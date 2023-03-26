@@ -43,9 +43,6 @@ class HomeViewModel(
     fun deletePlace(placeId: String) = repository.deletePlace(placeId){
         homeUIState = homeUIState.copy(placeDeletedStatus = it)
     }
-
-    //fun signOut() = authRepository.signOut()
-
 }
 
 data class HomeUIState(
