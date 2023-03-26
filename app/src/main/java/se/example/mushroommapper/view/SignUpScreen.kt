@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -73,13 +74,13 @@ fun SignUpScreen(
 
             Text(
                 modifier = Modifier.padding(bottom = 10.dp),
-                text = "Create Account",
+                text = stringResource(id = R.string.CreateAccount),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 color = NON_INTERACTABLE_COLOR.color
                 )
             Text(
-                text = "Enter your credential's to register",
+                text = stringResource(id = R.string.EnterCredToRegister),
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,
                 color = NON_INTERACTABLE_COLOR.color
@@ -95,7 +96,7 @@ fun SignUpScreen(
                     },
                     placeholder = {
                         Text(
-                            text = "Enter your email address",
+                            text = stringResource(id = R.string.EnterEmail),
                             color = INTERACTABLE_COLOR.color
                         )
                     },
@@ -114,11 +115,11 @@ fun SignUpScreen(
 
                 TextField(
                     label = { Text(
-                        text = "Password",
+                        text = stringResource(id = R.string.password),
                         color = INTERACTABLE_COLOR.color
                     ) },
                     placeholder = { Text(
-                        text = "Enter your password",
+                        text = stringResource(id = R.string.EnterPassword),
                         color = INTERACTABLE_COLOR.color
                     )},
                     trailingIcon = {
@@ -153,7 +154,7 @@ fun SignUpScreen(
                         .height(50.dp)
                 ) {
                     Text(
-                        text = "Sign Up",
+                        text = stringResource(id = R.string.SignUp),
                         color = NON_INTERACTABLE_COLOR.color,
                         modifier = Modifier.padding(7.dp)
                     )
@@ -166,7 +167,7 @@ fun SignUpScreen(
             }
             Text(
                 modifier = Modifier.padding(top = 15.dp),
-                text = "Already have an account?",
+                text = stringResource(id = R.string.HaveAccount),
                 fontWeight = FontWeight.Medium,
                 color = NON_INTERACTABLE_COLOR.color
             )
@@ -175,7 +176,7 @@ fun SignUpScreen(
                     .clickable {
                         onClick()
                     },
-                text = "Sign In",
+                text = stringResource(id = R.string.SignIn),
                 fontWeight = FontWeight.Bold,
                 color = INTERACTABLE_COLOR.color,
                 textDecoration = TextDecoration.Underline
@@ -183,7 +184,7 @@ fun SignUpScreen(
 
             Text(
                 modifier = Modifier.padding(top = 15.dp),
-                text = "Or connect with",
+                text = stringResource(id = R.string.OrConnectWith),
                 color = NON_INTERACTABLE_COLOR.color
             )
             Row(

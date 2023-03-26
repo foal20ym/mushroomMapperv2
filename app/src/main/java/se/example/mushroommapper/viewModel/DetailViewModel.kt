@@ -70,7 +70,9 @@ class DetailViewModel(
                 latitude = detailsUiState.latitude!!,
                 longitude = detailsUiState.longitude!!,
                 timestamp = Timestamp.now()
-            ) {}
+            ) {
+                detailsUiState = detailsUiState.copy(placeAddedStatus = it)
+            }
         }
     }
 

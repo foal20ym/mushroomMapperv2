@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -107,7 +108,7 @@ fun SignInScreen(
                 Text(
                     modifier = Modifier
                         .height(20.dp),
-                    text = "Enter your credential's to Login",
+                    text = stringResource(id = R.string.EnterCredentials),
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
                     color = NON_INTERACTABLE_COLOR.color,
@@ -132,7 +133,7 @@ fun SignInScreen(
                         value = email,
                         placeholder = {
                             Text(
-                                text = "Enter your email address",
+                                text = stringResource(id = R.string.EnterEmail),
                                 color = INTERACTABLE_COLOR.color
                             )
                         },
@@ -144,7 +145,7 @@ fun SignInScreen(
                     TextField(
                         label = {
                             Text(
-                                text = "Password",
+                                text = stringResource(id = R.string.password),
                                 color = INTERACTABLE_COLOR.color
                             )
                         },
@@ -157,7 +158,7 @@ fun SignInScreen(
                         },
                         placeholder = {
                             Text(
-                                text = "Enter your password",
+                                text = stringResource(id = R.string.EnterPassword),
                                 color = INTERACTABLE_COLOR.color
                             )
                         },
@@ -185,7 +186,7 @@ fun SignInScreen(
                         shape = RoundedCornerShape(50.dp),
                     ) {
                         Text(
-                            text = "Sign In",
+                            text = stringResource(id = R.string.SignIn),
                             color = NON_INTERACTABLE_COLOR.color,
                             modifier = Modifier.padding(7.dp)
                         )
@@ -203,7 +204,7 @@ fun SignInScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
                 ClickableText(
-                    text = AnnotatedString("Forgot password?"),
+                    text = AnnotatedString(stringResource(id = R.string.ForgotPassword)),
                     onClick = { onForgotClick() },
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -217,7 +218,7 @@ fun SignInScreen(
                 Spacer(modifier = Modifier.height(15.dp))
 
                 Text(
-                    text = "Don't have an account?",
+                    text = stringResource(id = R.string.DontHaveAccount),
                     style = TextStyle(
                         fontSize = 15.sp,
                         fontFamily = FontFamily.Default,
@@ -225,7 +226,7 @@ fun SignInScreen(
                     ),
                 )
                 ClickableText(
-                    text = AnnotatedString("Sign up"),
+                    text = AnnotatedString(stringResource(id = R.string.SignUp)),
                     onClick = { onSignUpClick() },
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -238,7 +239,7 @@ fun SignInScreen(
 
                 Text(
                     modifier = Modifier.padding(top = 15.dp),
-                    text = "or connect with",
+                    text = stringResource(id = R.string.OrConnectWith),
                     color = NON_INTERACTABLE_COLOR.color)
                 Row(
                     modifier = Modifier
@@ -294,11 +295,11 @@ fun SignInScreen(
                             }
                         }
                     }
-
+                    val signInSuccess = stringResource(id = R.string.SignInSuccess)
                     LaunchedEffect(key1 = googleSignInState.success) {
                         scope.launch {
                             if (googleSignInState.success != null) {
-                                Toast.makeText(context, "Sign In Success", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, signInSuccess, Toast.LENGTH_LONG).show()
                             }
                         }
                     }
@@ -316,6 +317,7 @@ fun SignInScreen(
         }
 
 }
+
 
 
 

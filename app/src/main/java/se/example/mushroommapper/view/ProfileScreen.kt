@@ -12,11 +12,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
 import com.google.type.LatLng
+import se.example.mushroommapper.R
 import se.example.mushroommapper.data.Resources
 import se.example.mushroommapper.model.Notes
 import se.example.mushroommapper.model.Places
@@ -30,8 +32,8 @@ import java.util.*
 fun ProfileScreen(
     homeViewModel: HomeViewModel?,
     onPlaceClick:(id:String) -> Unit,
-    navToDetailPage:() -> Unit, // Ta bort sen
-    navToLoginPage:() -> Unit, // Ta bort sen
+    navToDetailPage:() -> Unit,
+    navToLoginPage:() -> Unit,
 ){
     val homeUIState = homeViewModel?.homeUIState ?: HomeUIState()
 
@@ -87,7 +89,7 @@ fun ProfileScreen(
                         AlertDialog(onDismissRequest = {
                             openDialog = false
                         },
-                            title = { Text(text = "Delete Place?")},
+                            title = { Text(text = stringResource(id = R.string.DeletePlace))},
                             confirmButton = {
                                 Button(
                                     onClick = {
@@ -100,12 +102,12 @@ fun ProfileScreen(
                                         backgroundColor = Color.Red
                                     ),
                                 ) {
-                                    Text(text = "Delete")
+                                    Text(text = stringResource(id = R.string.Delete))
                                 }
                             },
                             dismissButton = {
                                 Button(onClick = { openDialog = false }) {
-                                    Text(text = "Cancel")
+                                    Text(text = stringResource(id = R.string.Cancel))
                                 }
                             }
                         )
@@ -114,7 +116,7 @@ fun ProfileScreen(
                 else -> {
                     Text(
                         text = homeUIState
-                            .placesList.throwable?.localizedMessage ?: "Unknown Error",
+                            .placesList.throwable?.localizedMessage ?: stringResource(id = R.string.UnknownError),
                         color = Color.Red
                     )
                 }

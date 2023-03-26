@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="app_name">MushroomMapper</string>
+<string name="hello">Hej</string>
+    <string name="EnterCredentials" >Skriv in dina uppgifter för att logga in</string>
+    <string name="EnterEmail" >Skriv in din email</string>
+    <string name="password" >Lösenord</string>
+    <string name="EnterPassword" >Skriv in ditt lösenord</string>
+    <string name="SignIn" >Logga in</string>
+    <string name="ForgotPassword" >Glömt lösenord?</string>
+    <string name="DontHaveAccount" >Har du inget konto?</string>
+    <string name="SignUp" >Registrera dig</string>
+    <string name="OrConnectWith" >Eller anslut med</string>
+    <string name="SignInSuccess" >Inloggning lyckades</string>
+    <string name="CreateAccount" >Skapa konto</string>
+    <string name="EnterCredToRegister" >Skriv in dina uppgifter för att registrera dig</string>
+    <string name="HaveAccount" >Har du redan ett konto?</string>
+    <string name="RevoveryEmail" >Ange email för att återställa lösenord</string>
+    <string name="ResetPassword" >Återställ lösenord</string>
+    <string name="tryLoginAgain" >Om du vill testa att logga in igen, gå till</string>
+    <string name="DeletePlace" >Ta bort plats?</string>
+    <string name="Delete" >Ta bort</string>
+    <string name="Cancel" >Avbryt</string>
+    <string name="UnknownError" >Okänt fel</string>
+    <string name="CapturedPhoto" >Tagen bild</string>
+    <string name="NoImageCaptured" >Ingen bild tagem</string>
+    <string name="AddedPlaceSuccessfully" >Platsen tillagd</string>
+    <string name="PlaceUpdatedSuccessfully" >Platsen uppdaterad</string>
+    <string name="Title" >Titel</string>
+    <string name="Description" >Beskrivning</string>
+    <string name="GetCoordinates" >Få dina koordinater genom att klicka här</string>
+    <string name="PickImage" >Välj bild</string>
+    <string name="Upload" >Ladda upp</string>
+    <string name="PleaseGiveAccessToFiles" >Vänligen ge åtkomst till filer i inställningar</string>
+    <string name="PleaseGiveAccessToImages" >Vänligen ge åtkomst till bilder i inställningar</string>
+    <string name="LatestActivity" >Senaste aktiviteterna</string>
+    <string name="NoLatestActivity" >Du har inga aktiviteter att visa.</string>
+    <string name="ToUploadAnEventUseCamera" >Använd kameran för att ta en bild eller ladda upp</string>
+    <string name="TakePhoto" >Ta bild</string>
+
+</resources>

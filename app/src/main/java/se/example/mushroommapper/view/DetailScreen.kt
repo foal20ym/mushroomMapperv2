@@ -15,14 +15,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import se.example.mushroommapper.R
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.detail.DetailsUiState
 
 @Composable
 fun DetailScreen(
-    detailViewModel: DetailViewModel?, // optional?? eller inte?
+    detailViewModel: DetailViewModel?,
     placeId: String,
     onNavigate:() -> Unit
 ){
@@ -72,42 +74,30 @@ fun DetailScreen(
                 .padding(padding)
             ) {
                 if(detailsUiState.placeAddedStatus){
+                    val msg = stringResource(id = R.string.AddedPlaceSuccessfully)
                     scope.launch {
                         scaffoldState.snackbarHostState
-                            .showSnackbar("Added Place Successfully")
+                            .showSnackbar(msg)
                         detailViewModel?.resetPlaceAddedStatus()
                         onNavigate.invoke()
                     }
                 }
                 if(detailsUiState.updatedPlaceStatus){
+                    val msg = stringResource(id = R.string.PlaceUpdatedSuccessfully)
                     scope.launch {
                         scaffoldState.snackbarHostState
-                            .showSnackbar("Place updated successfully")
+                            .showSnackbar(msg)
                         detailViewModel?.resetPlaceAddedStatus()
                         onNavigate.invoke()
                     }
                 }
 
-                /*LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    contentPadding = PaddingValues(
-                        vertical = 16.dp, horizontal = 8.dp
-                    )
-                ){
-                    itemsIndexed(Utils.colors){ colorIndex, color ->
-                        ColorItem(color = color) {
-                            detailViewModel?.onColorChange(colorIndex)
-                        }
-
-                    }
-                }*/
 
                 OutlinedTextField(value = detailsUiState.title,
                     onValueChange = {
                         detailViewModel?.onTitleChange(it)
                     },
-                    label = { Text(text = "Title")},
+                    label = { Text(text = stringResource(id = R.string.Title))},
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
@@ -115,7 +105,7 @@ fun DetailScreen(
                 OutlinedTextField(
                     value = detailsUiState.place,
                     onValueChange = { detailViewModel?.onPlaceChange(it)},
-                    label = { Text(text = "Description")},
+                    label = { Text(text = stringResource(id = R.string.Description))},
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
