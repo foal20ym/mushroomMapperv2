@@ -2,6 +2,8 @@ package se.example.mushroommapper.viewModel
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
+import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
