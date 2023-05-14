@@ -1,5 +1,6 @@
 package se.example.mushroommapper.view
 
+import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -57,6 +58,9 @@ fun SignInScreen(
 ) {
 
     val googleSignInState = viewModel.googleState.value
+    val shouldDisplayError = remember { mutableStateOf(false) }
+    val errorMessage = remember { mutableStateOf("") }
+
 
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
@@ -65,8 +69,10 @@ fun SignInScreen(
                 val result = account.getResult(ApiException::class.java)
                 val credentials = GoogleAuthProvider.getCredential(result.idToken, null)
                 viewModel.googleSignIn(credentials)
-            } catch (it: ApiException) {
-                print(it)
+            } catch (e: ApiException) {
+                print(e)
+                errorMessage.value = e.localizedMessage ?: "Unknown error"
+                shouldDisplayError.value = true
             }
         }
 
@@ -170,36 +176,74 @@ fun SignInScreen(
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
-                Box(modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp)) {
-                    Button(
-                        onClick = {
-                            scope.launch {
-                                viewModel.loginUser(email, password)
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 20.dp, start = 30.dp, end = 30.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = INTERACTABLE_COLOR.color,
-                        ),
-                        shape = RoundedCornerShape(50.dp),
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.SignIn),
-                            color = NON_INTERACTABLE_COLOR.color,
-                            modifier = Modifier.padding(7.dp)
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        if (state.value?.isLoading == true) {
-                            CircularProgressIndicator()
+            Box(modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp)) {
+                Button(
+                    onClick = {
+                        val emailInput = email.trim()
+                        val passwordInput = password.trim()
+
+                        if (emailInput.isEmpty()) {
+                            errorMessage.value = "Email is required"
+                            shouldDisplayError.value = true
+                            return@Button
                         }
+
+                        if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+                            errorMessage.value = "Invalid email address"
+                            shouldDisplayError.value = true
+                            return@Button
+                        }
+
+                        if (passwordInput.isEmpty()) {
+                            errorMessage.value = "Password is required"
+                            shouldDisplayError.value = true
+                            return@Button
+                        }
+
+                        /*if (passwordInput.length < 8) {
+                            errorMessage.value = "Password must be at least 8 characters long"
+                            shouldDisplayError.value = true
+                            return@Button
+                        }*/
+
+                        scope.launch {
+                            try {
+                                viewModel.loginUser(emailInput, passwordInput)
+                            } catch (e: Exception) {
+                                errorMessage.value = e.localizedMessage ?: "Unknown error"
+                                shouldDisplayError.value = true
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp, start = 30.dp, end = 30.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = INTERACTABLE_COLOR.color,
+                    ),
+                    shape = RoundedCornerShape(50.dp),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.SignIn),
+                        color = NON_INTERACTABLE_COLOR.color,
+                        modifier = Modifier.padding(7.dp)
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    if (state.value?.isLoading == true) {
+                        CircularProgressIndicator()
                     }
                 }
+            }
+
+            if (shouldDisplayError.value) {
+                ErrorDialog(errorMessage.value) {
+                    shouldDisplayError.value = false
+                }
+            }
 
 
                 Spacer(modifier = Modifier.height(20.dp))

@@ -1,29 +1,41 @@
 package se.example.mushroommapper.view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 val errorMessages = mutableListOf<String>()
 
 @Composable
+fun ErrorDialog(errorMessage: String, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = "Error") },
+        text = { Text(text = errorMessage) },
+        confirmButton = {
+            Button(onClick = onDismiss) {
+                Text(text = "Dismiss")
+            }
+        }
+    )
+}
+
+
+@Composable
 fun ErrorScreen(navController: NavHostController) {
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
+            .width(150.dp).height(50.dp),
         verticalArrangement = Arrangement.Center
 
     ) {
@@ -35,7 +47,7 @@ fun ErrorScreen(navController: NavHostController) {
         }
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Button(onClick = {
-                navController.navigate("viewAll")
+                navController.navigateUp()
                 errorMessages.clear()
             }) {
                 Text("OK")

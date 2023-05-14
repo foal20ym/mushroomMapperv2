@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,13 +41,12 @@ fun ManuallyAddLocationScreen(
 
     val locationViewModel = viewModel(modelClass = LocationViewModel::class.java)
     val location by locationViewModel.getLocationLiveData().observeAsState()
-
-
     val detailsUiState = detailViewModel?.detailsUiState ?: DetailsUiState()
-
     val isFormsNotBlank = detailsUiState.place.isNotBlank() &&
             detailsUiState.title.isNotBlank()
 
+    val shouldDisplayError = remember { mutableStateOf(false) }
+    val errorMessage = remember { mutableStateOf("") }
     val isNotNull = detailsUiState.latitude != null && detailsUiState.longitude != null
 
     val context = LocalContext.current
@@ -62,7 +59,7 @@ fun ManuallyAddLocationScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         floatingActionButton = {
-            AnimatedVisibility(visible = isFormsNotBlank) {
+            //AnimatedVisibility(visible = isFormsNotBlank) {
                 FloatingActionButton(
                     onClick = {
                         detailViewModel?.addPlace()
@@ -70,7 +67,7 @@ fun ManuallyAddLocationScreen(
                 ) {
                     Icon(imageVector = Icons.Default.Check, contentDescription = null)
                 }
-            }
+            //}
         },
     ) { padding ->
         Column(
@@ -97,6 +94,7 @@ fun ManuallyAddLocationScreen(
                     onNavigate.invoke()
                 }
             }
+
 
             TextField(
                 value = detailsUiState.title,
@@ -138,7 +136,37 @@ fun ManuallyAddLocationScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(onClick = {
+                Button(
+                    onClick = {
+                    val titleInput = detailsUiState.title.trim()
+                    val placeInput = detailsUiState.place.trim()
+                    val latitudeInput = detailsUiState.latitude?.toString()?.trim()
+                    val longitudeInput = detailsUiState.longitude?.toString()?.trim()
+
+                    if (titleInput.isEmpty()) {
+                        errorMessage.value = "Title can't be empty"
+                        shouldDisplayError.value = true
+                        return@Button
+                    }
+
+                    if (placeInput.isEmpty()) {
+                        errorMessage.value = "Invalid place"
+                        shouldDisplayError.value = true
+                        return@Button
+                    }
+
+                    if (latitudeInput.isNullOrEmpty()) {
+                        errorMessage.value = "Invalid latitude"
+                        shouldDisplayError.value = true
+                        return@Button
+                    }
+
+                    if (longitudeInput.isNullOrEmpty()) {
+                        errorMessage.value = "Invalid longitude"
+                        shouldDisplayError.value = true
+                        return@Button
+                    }
+
                     var lat: Double? = location?.latitude?.toDouble()
                     var lng: Double? = location?.longitude?.toDouble()
 
@@ -148,6 +176,11 @@ fun ManuallyAddLocationScreen(
 
                 }) {
                     Text(text = stringResource(id = R.string.GetCoordinates))
+                }
+                if (shouldDisplayError.value) {
+                    ErrorDialog(errorMessage.value) {
+                        shouldDisplayError.value = false
+                    }
                 }
             }
         }
