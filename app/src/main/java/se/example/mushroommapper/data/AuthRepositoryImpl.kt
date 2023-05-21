@@ -1,8 +1,5 @@
 package se.example.mushroommapper.data
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import com.google.android.gms.auth.api.Auth
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
