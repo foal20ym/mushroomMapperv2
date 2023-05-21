@@ -1,5 +1,6 @@
 package se.example.mushroommapper.view
 
+import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,7 +42,6 @@ import se.example.mushroommapper.viewModel.color
 @Composable
 fun SignUpScreen(
     onClick: () -> Unit,
-    onSignUpClick: () -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     var email by rememberSaveable { mutableStateOf("") }
@@ -49,6 +49,8 @@ fun SignUpScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val state = viewModel.signUpState.collectAsState(initial = null)
+    val shouldDisplayError = remember { mutableStateOf(false) }
+    val errorMessage = remember { mutableStateOf("") }
 
     Row(
         modifier = Modifier
@@ -78,7 +80,7 @@ fun SignUpScreen(
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 color = NON_INTERACTABLE_COLOR.color
-                )
+            )
             Text(
                 text = stringResource(id = R.string.EnterCredToRegister),
                 fontWeight = FontWeight.Medium,
@@ -114,20 +116,25 @@ fun SignUpScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 TextField(
-                    label = { Text(
-                        text = stringResource(id = R.string.password),
-                        color = INTERACTABLE_COLOR.color
-                    ) },
-                    placeholder = { Text(
-                        text = stringResource(id = R.string.EnterPassword),
-                        color = INTERACTABLE_COLOR.color
-                    )},
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.password),
+                            color = INTERACTABLE_COLOR.color
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.EnterPassword),
+                            color = INTERACTABLE_COLOR.color
+                        )
+                    },
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Default.Key,
                             contentDescription = "passwordIcon",
                             tint = INTERACTABLE_COLOR.color
-                        ) },
+                        )
+                    },
                     value = password,
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -137,13 +144,47 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp),
+            Box(
+                modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp),
             ) {
                 Button(
                     onClick = {
-                        scope.launch {
-                            viewModel.registerUser(email, password)
+                        val emailInput = email.trim()
+                        val passwordInput = password.trim()
+
+                        if (emailInput.isEmpty()) {
+                            errorMessage.value = "Email is required"
+                            shouldDisplayError.value = true
+                            return@Button
                         }
+
+                        if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+                            errorMessage.value = "Invalid email address"
+                            shouldDisplayError.value = true
+                            return@Button
+                        }
+
+                        if (passwordInput.isEmpty()) {
+                            errorMessage.value = "Password is required"
+                            shouldDisplayError.value = true
+                            return@Button
+                        }
+
+                        if (passwordInput.length < 8) {
+                            errorMessage.value = "Password must be at least 8 characters long"
+                            shouldDisplayError.value = true
+                            return@Button
+                        }
+
+                        scope.launch {
+                            try {
+                                viewModel.registerUser(emailInput, passwordInput)
+                            } catch (e: Exception) {
+                                errorMessage.value = e.localizedMessage ?: "Unknown error"
+                                shouldDisplayError.value = true
+                            }
+                        }
+
                     },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = INTERACTABLE_COLOR.color,
@@ -159,12 +200,21 @@ fun SignUpScreen(
                         modifier = Modifier.padding(7.dp)
                     )
                 }
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     if (state.value?.isLoading == true) {
                         CircularProgressIndicator()
                     }
                 }
             }
+            if (shouldDisplayError.value) {
+                ErrorDialog(errorMessage.value) {
+                    shouldDisplayError.value = false
+                }
+            }
+
             Text(
                 modifier = Modifier.padding(top = 15.dp),
                 text = stringResource(id = R.string.HaveAccount),
@@ -209,7 +259,6 @@ fun SignUpScreen(
                         contentDescription = "Google Icon", tint = Color.Unspecified
                     )
                 }
-
             }
         }
 
@@ -218,6 +267,7 @@ fun SignUpScreen(
                 if (state.value?.isSuccess?.isNotEmpty() == true) {
                     val success = state.value?.isSuccess
                     Toast.makeText(context, "$success", Toast.LENGTH_LONG).show()
+                    onClick()
                 }
             }
         }
@@ -231,146 +281,3 @@ fun SignUpScreen(
         }
     }
 }
-
-
-
-/*
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 30.dp, end = 30.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            modifier = Modifier.padding(bottom = 10.dp),
-            text = "Create Account",
-            fontWeight = FontWeight.Bold,
-            fontSize = 35.sp,
-
-        )
-        Text(
-            text = "Enter your credential's to register",
-            fontWeight = FontWeight.Medium,
-            fontSize = 15.sp, color = Color.Gray,
-            )
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = email,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-                disabledLabelColor = Color.Red,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            onValueChange = {
-                email = it
-            },
-            shape = RoundedCornerShape(8.dp),
-            singleLine = true,
-            placeholder = {
-                Text(text = "Email")
-            }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = password,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-                disabledLabelColor = Color.Black,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            onValueChange = {
-                password = it
-            },
-            shape = RoundedCornerShape(8.dp),
-            singleLine = true,
-            placeholder = {
-                Text(text = "Password")
-            }
-        )
-        Button(
-            onClick = {
-                scope.launch {
-                    viewModel.registerUser(email, password)
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp, start = 30.dp, end = 30.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.White,
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(15.dp)
-        ) {
-            Text(
-                text = "Sign Up",
-                color = Color.Black,
-                modifier = Modifier
-                    .padding(7.dp)
-            )
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            if (state.value?.isLoading == true) {
-                CircularProgressIndicator()
-            }
-        }
-        Text(
-            modifier = Modifier
-                .padding(15.dp)
-                .clickable {
-                    onClick()
-                },
-            text = "Already Have an account? sign In",
-            fontWeight = FontWeight.Bold, color = Color.Black
-        )
-
-        Text(
-            modifier = Modifier
-                .padding(
-                    top = 40.dp,
-                ),
-            text = "Or connect with",
-            fontWeight = FontWeight.Medium, color = Color.Gray
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp), horizontalArrangement = Arrangement.Center
-        ) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Default.Star, contentDescription= "star")
-            }
-            Spacer(modifier = Modifier.width(20.dp))
-            IconButton(onClick = {
-
-            }) {
-                Icon(Icons.Default.Star, contentDescription= "star")
-            }
-
-        }
-    }
-
-    LaunchedEffect(key1 = state.value?.isSuccess) {
-        scope.launch {
-            if (state.value?.isSuccess?.isNotEmpty() == true) {
-                val success = state.value?.isSuccess
-                Toast.makeText(context, "$success", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-    LaunchedEffect(key1 = state.value?.isError) {
-        scope.launch {
-            if (state.value?.isError?.isNotBlank() == true) {
-                val error = state.value?.isError
-                Toast.makeText(context, "$error", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
- */

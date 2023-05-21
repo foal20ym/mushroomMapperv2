@@ -9,7 +9,6 @@ import se.example.mushroommapper.view.SignUpScreen
 import se.example.mushroommapper.view.ResetPasswordScreen
 
 
-
 fun NavGraphBuilder.NavigationGraph(
     navController: NavHostController,
 ) {
@@ -36,14 +35,11 @@ fun NavGraphBuilder.NavigationGraph(
             SignUpScreen(
                 onClick = {
                     navController.navigate(Screens.SignInScreen.route)
-                },
-                onSignUpClick = {
-                    navController.navigate(Screens.SignUpScreen.route)
                 }
             )
         }
 
-        composable(route = Screens.ResetPasswordScreen.route){
+        composable(route = Screens.ResetPasswordScreen.route) {
             ResetPasswordScreen(
                 onClick = {
                     navController.navigate(Screens.SignInScreen.route)
