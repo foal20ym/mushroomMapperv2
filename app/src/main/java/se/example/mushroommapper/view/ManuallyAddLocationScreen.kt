@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
-import se.example.mushroommapper.LocationViewModel
+import se.example.mushroommapper.viewModel.LocationViewModel
 import se.example.mushroommapper.R
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.detail.DetailsUiState
@@ -30,7 +30,6 @@ fun ManuallyAddLocationScreen(
     val locationViewModel = viewModel(modelClass = LocationViewModel::class.java)
     val location by locationViewModel.getLocationLiveData().observeAsState()
     val detailsUiState = detailViewModel?.detailsUiState ?: DetailsUiState()
-    detailViewModel?.resetState()
     val shouldDisplayError = remember { mutableStateOf(false) }
     val errorMessage = remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()

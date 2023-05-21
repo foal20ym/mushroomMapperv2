@@ -22,6 +22,7 @@ import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.navigation.RootNavigationGraph
 import se.example.mushroommapper.ui.theme.MushroomMapperTheme
 import se.example.mushroommapper.viewModel.HomeViewModel
+import se.example.mushroommapper.viewModel.LocationViewModel
 import se.example.mushroommapper.viewModel.MapViewModel
 
 @AndroidEntryPoint
