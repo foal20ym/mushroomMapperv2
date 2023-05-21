@@ -1,4 +1,4 @@
-package se.example.mushroommapper
+package se.example.mushroommapper.data
 
 
 import android.Manifest
@@ -91,7 +91,7 @@ class LocationLiveData(var context: Context) : LiveData<LocationDetails>() {
         val ONE_MINUTE : Long = 60000
         val locationRequest : LocationRequest = LocationRequest.create().apply {
             interval = ONE_MINUTE
-            fastestInterval = ONE_MINUTE/4
+            fastestInterval = ONE_MINUTE /4
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         }

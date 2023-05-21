@@ -1,8 +1,8 @@
-package se.example.mushroommapper
+package se.example.mushroommapper.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-
+import se.example.mushroommapper.data.LocationLiveData
 
 
 class LocationViewModel(application: Application) : AndroidViewModel(application) {

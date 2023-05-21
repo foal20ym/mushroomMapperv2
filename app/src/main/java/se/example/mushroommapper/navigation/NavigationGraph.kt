@@ -4,9 +4,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import se.example.mushroommapper.view.ResetPasswordScreen
 import se.example.mushroommapper.view.SignInScreen
 import se.example.mushroommapper.view.SignUpScreen
-import se.example.mushroommapper.view.ResetPasswordScreen
 
 
 fun NavGraphBuilder.NavigationGraph(

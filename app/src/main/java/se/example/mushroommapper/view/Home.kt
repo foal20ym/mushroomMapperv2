@@ -1,7 +1,6 @@
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -17,17 +16,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.Timestamp
 import se.example.mushroommapper.R
 import se.example.mushroommapper.data.Resources
-import se.example.mushroommapper.model.Notes
 import se.example.mushroommapper.model.Places
 import se.example.mushroommapper.ui.theme.BACKGROUND_COLOR
-import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
 import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
 import se.example.mushroommapper.view.ErrorDialog
 import se.example.mushroommapper.viewModel.HomeUIState

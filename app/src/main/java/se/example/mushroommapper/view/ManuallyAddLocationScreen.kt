@@ -1,6 +1,5 @@
 package se.example.mushroommapper.view
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,16 +13,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
-import se.example.mushroommapper.LocationViewModel
+import se.example.mushroommapper.viewModel.LocationViewModel
 import se.example.mushroommapper.R
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.detail.DetailsUiState
-import se.example.mushroommapper.model.LocationDetails
 
 @Composable
 fun ManuallyAddLocationScreen(
@@ -109,18 +106,22 @@ fun ManuallyAddLocationScreen(
         ) {
             if (detailsUiState.placeAddedStatus) {
                 val msg = stringResource(id = R.string.AddedPlaceSuccessfully)
-                scope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(msg)
-                    detailViewModel?.resetPlaceAddedStatus()
-                    onNavigate.invoke()
+                LaunchedEffect(key1 = null) {
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(msg)
+                        detailViewModel?.resetPlaceAddedStatus()
+                        onNavigate.invoke()
+                    }
                 }
             }
             if (detailsUiState.updatedPlaceStatus) {
                 val msg = stringResource(id = R.string.PlaceUpdatedSuccessfully)
-                scope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(msg)
-                    detailViewModel?.resetPlaceAddedStatus()
-                    onNavigate.invoke()
+                LaunchedEffect(key1 = null){
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(msg)
+                        detailViewModel?.resetPlaceAddedStatus()
+                        onNavigate.invoke()
+                    }
                 }
             }
 
@@ -165,8 +166,8 @@ fun ManuallyAddLocationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(onClick = {
-                    var lat: Double? = location?.latitude?.toDouble()
-                    var lng: Double? = location?.longitude?.toDouble()
+                    val lat: Double? = location?.latitude?.toDouble()
+                    val lng: Double? = location?.longitude?.toDouble()
 
                     detailViewModel?.onLatitudeChange(lat.toString())
                     detailViewModel?.onLongitudeChange(lng.toString())

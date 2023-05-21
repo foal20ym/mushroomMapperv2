@@ -2,7 +2,6 @@ package se.example.mushroommapper.data
 
 import android.content.Context
 import android.net.Uri
-import androidx.camera.core.ImageCapture.OnImageSavedCallback
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 

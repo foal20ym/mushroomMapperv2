@@ -19,35 +19,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import se.example.mushroommapper.BottomBarScreen
+import se.example.mushroommapper.view.BottomBarScreen
 import se.example.mushroommapper.detail.DetailViewModel
+import se.example.mushroommapper.detail.DetailsUiState
 import se.example.mushroommapper.navigation.Graph
 import se.example.mushroommapper.navigation.HomeNavGraph
+import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
 import se.example.mushroommapper.viewModel.HomeViewModel
 import se.example.mushroommapper.viewModel.MapViewModel
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
-import java.io.File
-import java.util.concurrent.ExecutorService
-import androidx.activity.viewModels
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import coil.compose.rememberAsyncImagePainter
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
-import se.example.mushroommapper.R
-import se.example.mushroommapper.model.Places
-import java.util.concurrent.Executors
-import se.example.mushroommapper.ui.theme.BACKGROUND_COLOR
-import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
-import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
 import se.example.mushroommapper.viewModel.color
 
 @Composable
@@ -59,7 +38,7 @@ fun HomeScreen(
 ) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
-        topBar = { TopBar(navController = navController)},
+        topBar = { TopBar(navController = navController, detailViewModel)},
         modifier = Modifier
     ) { PaddingValues ->
         Column(modifier = Modifier.padding(PaddingValues)){
@@ -70,7 +49,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun TopBar(navController: NavHostController) {
+fun TopBar(navController: NavHostController,detailViewModel: DetailViewModel) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -82,7 +61,10 @@ fun TopBar(navController: NavHostController) {
             }
         },
         navigationIcon = {
-            IconButton(onClick = {navController.navigate(Graph.HOME)}) {
+            IconButton(onClick = {
+                navController.navigate(Graph.HOME)
+                detailViewModel.resetState()
+            }) {
                 Icon(Icons.Filled.ArrowBack, "backIcon")
             }
         },

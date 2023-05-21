@@ -1,11 +1,10 @@
 package se.example.mushroommapper.view
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -28,12 +27,8 @@ fun DetailScreen(
     onNavigate: () -> Unit
 ) {
     val detailsUiState = detailViewModel?.detailsUiState ?: DetailsUiState()
-    val isFormsNotBlank = detailsUiState.place.isNotBlank() &&
-            detailsUiState.title.isNotBlank()
-
-    val isNotNull = detailsUiState.latitude != null && detailsUiState.longitude != null
     val isPlaceIdNotBlank = placeId.isNotBlank()
-    val icon = if (isPlaceIdNotBlank) Icons.Default.Refresh
+    if (isPlaceIdNotBlank) Icons.Default.Refresh
     else Icons.Default.Check
     LaunchedEffect(key1 = Unit) {
         if (isPlaceIdNotBlank) {
@@ -47,89 +42,6 @@ fun DetailScreen(
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
-    /*Scaffold(
-        scaffoldState = scaffoldState,
-        floatingActionButton = {
-            AnimatedVisibility(visible = isFormsNotBlank) {
-                FloatingActionButton(
-                    onClick = {
-                        if (isPlaceIdNotBlank) {
-                            detailViewModel?.updatePlace(placeId)
-                        } else {
-                            detailViewModel?.addPlace()
-                        }
-                    }
-                ) {
-                    Icon(imageVector = icon, contentDescription = null)
-                }
-            }
-        },
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.Gray)
-                .padding(padding)
-        ) {
-            if (detailsUiState.placeAddedStatus) {
-                val msg = stringResource(id = R.string.AddedPlaceSuccessfully)
-                scope.launch {
-                    scaffoldState.snackbarHostState
-                        .showSnackbar(msg)
-                    detailViewModel?.resetPlaceAddedStatus()
-                    onNavigate.invoke()
-                }
-            }
-            if (detailsUiState.updatedPlaceStatus) {
-                val msg = stringResource(id = R.string.PlaceUpdatedSuccessfully)
-                scope.launch {
-                    scaffoldState.snackbarHostState
-                        .showSnackbar(msg)
-                    detailViewModel?.resetPlaceAddedStatus()
-                    onNavigate.invoke()
-                }
-            }
-
-            TextField(value = detailsUiState.title,
-                onValueChange = {
-                    detailViewModel?.onTitleChange(it)
-                },
-                label = { Text(text = stringResource(id = R.string.Title)) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-            TextField(
-                value = detailsUiState.place,
-                onValueChange = { detailViewModel?.onPlaceChange(it) },
-                label = { Text(text = stringResource(id = R.string.Description)) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-
-            TextField(
-                value = if (detailsUiState.latitude == null) "" else detailsUiState.latitude.toString(),
-                onValueChange = { detailViewModel?.onLatitudeChange(it) },
-                label = { Text(text = "Latitude") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-            TextField(
-                value = if (detailsUiState.longitude == null) "" else detailsUiState.longitude.toString(),
-                onValueChange = { detailViewModel?.onLongitudeChange(it) },
-                label = { Text(text = "Longitude") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
-        }
-    }*/
-
-
-
-
     Scaffold(
         scaffoldState = scaffoldState,
     ) { padding ->
@@ -141,18 +53,22 @@ fun DetailScreen(
         ) {
             if (detailsUiState.placeAddedStatus) {
                 val msg = stringResource(id = R.string.AddedPlaceSuccessfully)
-                scope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(msg)
-                    detailViewModel?.resetPlaceAddedStatus()
-                    onNavigate.invoke()
+                LaunchedEffect(key1 = null) {
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(msg)
+                        detailViewModel?.resetPlaceAddedStatus()
+                        onNavigate.invoke()
+                    }
                 }
             }
             if (detailsUiState.updatedPlaceStatus) {
                 val msg = stringResource(id = R.string.PlaceUpdatedSuccessfully)
-                scope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(msg)
-                    detailViewModel?.resetPlaceAddedStatus()
-                    onNavigate.invoke()
+                LaunchedEffect(key1 = null) {
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(msg)
+                        detailViewModel?.resetPlaceAddedStatus()
+                        onNavigate.invoke()
+                    }
                 }
             }
 

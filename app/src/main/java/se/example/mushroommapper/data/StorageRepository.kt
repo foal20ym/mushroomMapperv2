@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import se.example.mushroommapper.model.Images
 import se.example.mushroommapper.model.Places
-import java.util.UUID
+import java.util.*
 
 
 const val NOTES_COLLECTION_REF = "notes"

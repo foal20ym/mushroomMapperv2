@@ -21,10 +21,6 @@ class DetailViewModel(
     private val user:FirebaseUser?
         get() = repository.user()
 
-    fun onColorChange(colorIndex: Int){
-        detailsUiState = detailsUiState.copy(colorIndex = colorIndex)
-    }
-
     fun onTitleChange(title:String) {
         detailsUiState = detailsUiState.copy(title = title)
     }
@@ -115,6 +111,7 @@ class DetailViewModel(
             placeAddedStatus = false,
             updatedPlaceStatus = false
         )
+        resetState()
     }
 
     fun resetState(){
