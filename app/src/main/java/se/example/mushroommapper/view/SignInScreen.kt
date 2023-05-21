@@ -82,9 +82,6 @@ fun SignInScreen(
     val context = LocalContext.current
     val state = viewModel.signInState.collectAsState(initial = null)
 
-
-
-
     Row(
         modifier = Modifier
             .background(color = BACKGROUND_COLOR.color)
@@ -200,12 +197,6 @@ fun SignInScreen(
                             return@Button
                         }
 
-                        /*if (passwordInput.length < 8) {
-                            errorMessage.value = "Password must be at least 8 characters long"
-                            shouldDisplayError.value = true
-                            return@Button
-                        }*/
-
                         scope.launch {
                             try {
                                 viewModel.loginUser(emailInput, passwordInput)
@@ -214,6 +205,7 @@ fun SignInScreen(
                                 shouldDisplayError.value = true
                             }
                         }
+
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -244,7 +236,6 @@ fun SignInScreen(
                     shouldDisplayError.value = false
                 }
             }
-
 
                 Spacer(modifier = Modifier.height(20.dp))
                 ClickableText(
