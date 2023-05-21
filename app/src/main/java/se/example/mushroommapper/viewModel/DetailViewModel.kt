@@ -80,7 +80,9 @@ class DetailViewModel(
     fun setEditFieldsPlace(place: Places){
         detailsUiState = detailsUiState.copy(
             title = place.title,
-            place = place.description
+            place = place.description,
+            latitude = place.latitude,
+            longitude = place.longitude
         )
     }
 
@@ -100,6 +102,8 @@ class DetailViewModel(
         repository.updatePlace(
             title = detailsUiState.title,
             description = detailsUiState.place,
+            latitude = detailsUiState.latitude!!,
+            longitude = detailsUiState.longitude!!,
             placeId = placeId,
         ){
             detailsUiState = detailsUiState.copy(updatedPlaceStatus = it)

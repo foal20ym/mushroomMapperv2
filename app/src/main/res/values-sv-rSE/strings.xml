@@ -37,5 +37,5 @@
     <string name="NoLatestActivity" >Du har inga aktiviteter att visa.</string>
     <string name="ToUploadAnEventUseCamera" >Använd kameran för att ta en bild eller ladda upp</string>
     <string name="TakePhoto" >Ta bild</string>
-
+    <string name="UpdatePlace" >Uppdatera plats</string>
 </resources>

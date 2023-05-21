@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -131,72 +132,6 @@ fun DetailScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        floatingActionButton = {
-            Button(onClick = {
-                val titleInput = detailsUiState.title.trim()
-                val placeInput = detailsUiState.place.trim()
-                //val latitudeInput = detailsUiState.latitude?.toString()?.trim()
-                //val longitudeInput = detailsUiState.longitude?.toString()?.trim()
-
-                if (titleInput.isEmpty()) {
-                    errorMessage.value = "Title is required"
-                    shouldDisplayError.value = true
-                    return@Button
-                }
-
-                if (placeInput.isEmpty()) {
-                    errorMessage.value = "Description is required"
-                    shouldDisplayError.value = true
-                    return@Button
-                }
-
-                //////
-                /*val latitude = latitudeInput?.toDoubleOrNull()
-                val longitude = longitudeInput?.toDoubleOrNull()
-
-
-                if (latitudeInput.isNullOrEmpty()) {
-                    errorMessage.value = "Latitude is required"
-                    shouldDisplayError.value = true
-                    return@Button
-                }
-
-                if (latitude == null || latitude < -90 || latitude > 90) {
-                    errorMessage.value = "Latitude is invalid or out of range (-90 to 90)"
-                    shouldDisplayError.value = true
-                    return@Button
-                }
-
-                if (longitudeInput.isNullOrEmpty()) {
-                    errorMessage.value = "Longitude is required"
-                    shouldDisplayError.value = true
-                    return@Button
-                }
-
-                if (longitude == null || longitude < -180 || longitude > 180) {
-                    errorMessage.value = "Longitude is invalid or out of range (-180 to 180)"
-                    shouldDisplayError.value = true
-                    return@Button
-                }*/
-
-                if (!shouldDisplayError.value) {
-                    if (isPlaceIdNotBlank) {
-                        detailViewModel?.updatePlace(placeId)
-                    } else {
-                        detailViewModel?.addPlace()
-                    }
-                }
-
-            }) {
-
-                Icon(imageVector = Icons.Default.Check, contentDescription = null)
-            }
-            if (shouldDisplayError.value) {
-                ErrorDialog(errorMessage.value) {
-                    shouldDisplayError.value = false
-                }
-            }
-        },
     ) { padding ->
         Column(
             modifier = Modifier
@@ -221,7 +156,8 @@ fun DetailScreen(
                 }
             }
 
-            TextField(value = detailsUiState.title,
+            TextField(
+                value = detailsUiState.title,
                 onValueChange = {
                     detailViewModel?.onTitleChange(it)
                 },
@@ -255,12 +191,75 @@ fun DetailScreen(
                     .fillMaxWidth()
                     .padding(8.dp)
             )
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = {
+
+                    val titleInput = detailsUiState.title.trim()
+                    val placeInput = detailsUiState.place.trim()
+                    val latitudeInput = detailsUiState.latitude?.toString()?.trim()
+                    val longitudeInput = detailsUiState.longitude?.toString()?.trim()
+
+                    if (titleInput.isEmpty()) {
+                        errorMessage.value = "Title is required"
+                        shouldDisplayError.value = true
+                        return@Button
+                    }
+
+                    if (placeInput.isEmpty()) {
+                        errorMessage.value = "Description is required"
+                        shouldDisplayError.value = true
+                        return@Button
+                    }
+
+                    val latitude = latitudeInput?.toDoubleOrNull()
+                    val longitude = longitudeInput?.toDoubleOrNull()
+
+                    if (latitudeInput.isNullOrEmpty()) {
+                        errorMessage.value = "Latitude is required"
+                        shouldDisplayError.value = true
+                        return@Button
+                    }
+
+                    if (latitude == null || latitude < -90 || latitude > 90) {
+                        errorMessage.value = "Latitude is invalid or out of range (-90 to 90)"
+                        shouldDisplayError.value = true
+                        return@Button
+                    }
+
+                    if (longitudeInput.isNullOrEmpty()) {
+                        errorMessage.value = "Longitude is required"
+                        shouldDisplayError.value = true
+                        return@Button
+                    }
+
+                    if (longitude == null || longitude < -180 || longitude > 180) {
+                        errorMessage.value = "Longitude is invalid or out of range (-180 to 180)"
+                        shouldDisplayError.value = true
+                        return@Button
+                    }
+
+                    if (!shouldDisplayError.value) {
+                        if (isPlaceIdNotBlank) {
+                            detailViewModel?.updatePlace(placeId)
+                        } else {
+                            detailViewModel?.addPlace()
+                        }
+                    }
+                }) {
+                    Text(text = stringResource(id = R.string.UpdatePlace))
+                }
+                if (shouldDisplayError.value) {
+                    ErrorDialog(errorMessage.value) {
+                        shouldDisplayError.value = false
+                    }
+                }
+            }
         }
     }
-
-
-
-
 }
 
 

@@ -148,12 +148,16 @@ class StorageRepository {
     fun updatePlace(
         title: String,
         description: String,
+        latitude: Double,
+        longitude: Double,
         placeId: String,
         onResult: (Boolean) -> Unit
     ){
         val updateData = hashMapOf<String, Any>(
             "description" to description,
-            "title" to title
+            "title" to title,
+            "latitude" to latitude,
+            "longitude" to longitude
         )
 
         placeRef.document(placeId)
