@@ -42,7 +42,6 @@ import se.example.mushroommapper.viewModel.color
 @Composable
 fun SignUpScreen(
     onClick: () -> Unit,
-    onSignUpClick: () -> Unit,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
     var email by rememberSaveable { mutableStateOf("") }
@@ -81,7 +80,7 @@ fun SignUpScreen(
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 color = NON_INTERACTABLE_COLOR.color
-                )
+            )
             Text(
                 text = stringResource(id = R.string.EnterCredToRegister),
                 fontWeight = FontWeight.Medium,
@@ -117,20 +116,25 @@ fun SignUpScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 TextField(
-                    label = { Text(
-                        text = stringResource(id = R.string.password),
-                        color = INTERACTABLE_COLOR.color
-                    ) },
-                    placeholder = { Text(
-                        text = stringResource(id = R.string.EnterPassword),
-                        color = INTERACTABLE_COLOR.color
-                    )},
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.password),
+                            color = INTERACTABLE_COLOR.color
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.EnterPassword),
+                            color = INTERACTABLE_COLOR.color
+                        )
+                    },
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Default.Key,
                             contentDescription = "passwordIcon",
                             tint = INTERACTABLE_COLOR.color
-                        ) },
+                        )
+                    },
                     value = password,
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -140,7 +144,8 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp),
+            Box(
+                modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp),
             ) {
                 Button(
                     onClick = {
@@ -195,7 +200,10 @@ fun SignUpScreen(
                         modifier = Modifier.padding(7.dp)
                     )
                 }
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     if (state.value?.isLoading == true) {
                         CircularProgressIndicator()
                     }
@@ -251,7 +259,6 @@ fun SignUpScreen(
                         contentDescription = "Google Icon", tint = Color.Unspecified
                     )
                 }
-
             }
         }
 

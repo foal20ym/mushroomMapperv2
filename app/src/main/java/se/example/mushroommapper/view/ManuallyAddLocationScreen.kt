@@ -27,8 +27,7 @@ import se.example.mushroommapper.model.LocationDetails
 
 @Composable
 fun ManuallyAddLocationScreen(
-    detailViewModel: DetailViewModel?,
-    onNavigate:() -> Unit
+    detailViewModel: DetailViewModel?, onNavigate: () -> Unit
 ) {
 
     val locationViewModel = viewModel(modelClass = LocationViewModel::class.java)
@@ -42,59 +41,58 @@ fun ManuallyAddLocationScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         floatingActionButton = {
-            Button(
-                onClick = {
-                    val titleInput = detailsUiState.title.trim()
-                    val placeInput = detailsUiState.place.trim()
-                    val latitudeInput = detailsUiState.latitude?.toString()?.trim()
-                    val longitudeInput = detailsUiState.longitude?.toString()?.trim()
+            Button(onClick = {
+                val titleInput = detailsUiState.title.trim()
+                val placeInput = detailsUiState.place.trim()
+                val latitudeInput = detailsUiState.latitude?.toString()?.trim()
+                val longitudeInput = detailsUiState.longitude?.toString()?.trim()
 
-                    if (titleInput.isEmpty()) {
-                        errorMessage.value = "Title is required"
-                        shouldDisplayError.value = true
-                        return@Button
-                    }
+                if (titleInput.isEmpty()) {
+                    errorMessage.value = "Title is required"
+                    shouldDisplayError.value = true
+                    return@Button
+                }
 
-                    if (placeInput.isEmpty()) {
-                        errorMessage.value = "Description is required"
-                        shouldDisplayError.value = true
-                        return@Button
-                    }
+                if (placeInput.isEmpty()) {
+                    errorMessage.value = "Description is required"
+                    shouldDisplayError.value = true
+                    return@Button
+                }
 
-                    //////
-                    val latitude = latitudeInput?.toDoubleOrNull()
-                    val longitude = longitudeInput?.toDoubleOrNull()
+                //////
+                val latitude = latitudeInput?.toDoubleOrNull()
+                val longitude = longitudeInput?.toDoubleOrNull()
 
 
-                    if (latitudeInput.isNullOrEmpty()) {
-                        errorMessage.value = "Latitude is required"
-                        shouldDisplayError.value = true
-                        return@Button
-                    }
+                if (latitudeInput.isNullOrEmpty()) {
+                    errorMessage.value = "Latitude is required"
+                    shouldDisplayError.value = true
+                    return@Button
+                }
 
-                    if (latitude == null || latitude < -90 || latitude > 90) {
-                        errorMessage.value = "Latitude is invalid or out of range (-90 to 90)"
-                        shouldDisplayError.value = true
-                        return@Button
-                    }
+                if (latitude == null || latitude < -90 || latitude > 90) {
+                    errorMessage.value = "Latitude is invalid or out of range (-90 to 90)"
+                    shouldDisplayError.value = true
+                    return@Button
+                }
 
-                    if (longitudeInput.isNullOrEmpty()) {
-                        errorMessage.value = "Longitude is required"
-                        shouldDisplayError.value = true
-                        return@Button
-                    }
+                if (longitudeInput.isNullOrEmpty()) {
+                    errorMessage.value = "Longitude is required"
+                    shouldDisplayError.value = true
+                    return@Button
+                }
 
-                    if (longitude == null || longitude < -180 || longitude > 180) {
-                        errorMessage.value = "Longitude is invalid or out of range (-180 to 180)"
-                        shouldDisplayError.value = true
-                        return@Button
-                    }
+                if (longitude == null || longitude < -180 || longitude > 180) {
+                    errorMessage.value = "Longitude is invalid or out of range (-180 to 180)"
+                    shouldDisplayError.value = true
+                    return@Button
+                }
 
-                    if(!shouldDisplayError.value){
-                        detailViewModel?.addPlace()
-                    }
+                if (!shouldDisplayError.value) {
+                    detailViewModel?.addPlace()
+                }
 
-                }) {
+            }) {
 
                 Icon(imageVector = Icons.Default.Check, contentDescription = null)
             }
@@ -114,8 +112,7 @@ fun ManuallyAddLocationScreen(
             if (detailsUiState.placeAddedStatus) {
                 val msg = stringResource(id = R.string.AddedPlaceSuccessfully)
                 scope.launch {
-                    scaffoldState.snackbarHostState
-                        .showSnackbar(msg)
+                    scaffoldState.snackbarHostState.showSnackbar(msg)
                     detailViewModel?.resetPlaceAddedStatus()
                     onNavigate.invoke()
                 }
@@ -123,15 +120,13 @@ fun ManuallyAddLocationScreen(
             if (detailsUiState.updatedPlaceStatus) {
                 val msg = stringResource(id = R.string.PlaceUpdatedSuccessfully)
                 scope.launch {
-                    scaffoldState.snackbarHostState
-                        .showSnackbar(msg)
+                    scaffoldState.snackbarHostState.showSnackbar(msg)
                     detailViewModel?.resetPlaceAddedStatus()
                     onNavigate.invoke()
                 }
             }
 
-            TextField(
-                value = detailsUiState.title,
+            TextField(value = detailsUiState.title,
                 onValueChange = {
                     detailViewModel?.onTitleChange(it)
                 },
@@ -170,8 +165,7 @@ fun ManuallyAddLocationScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(
-                    onClick = {
+                Button(onClick = {
                     var lat: Double? = location?.latitude?.toDouble()
                     var lng: Double? = location?.longitude?.toDouble()
 
