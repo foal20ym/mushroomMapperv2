@@ -16,7 +16,6 @@ import se.example.mushroommapper.model.Places
 import java.util.*
 
 
-const val NOTES_COLLECTION_REF = "notes"
 const val PLACES_COLLECTION_REF = "places"
 const val IMAGES_COLLECTION_REF = "images"
 
@@ -26,7 +25,6 @@ class StorageRepository {
     fun hasUser(): Boolean = Firebase.auth.currentUser != null
     fun getUserId(): String = Firebase.auth.currentUser?.uid.orEmpty()
 
-    private val notesRef: CollectionReference = Firebase.firestore.collection(NOTES_COLLECTION_REF)
     private val placeRef: CollectionReference = Firebase.firestore.collection(PLACES_COLLECTION_REF)
     private val imageRef: CollectionReference = Firebase.firestore.collection((IMAGES_COLLECTION_REF)
     )

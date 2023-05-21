@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import se.example.mushroommapper.view.BottomBarScreen
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.view.*
 import se.example.mushroommapper.viewModel.HomeViewModel
@@ -71,9 +70,7 @@ fun HomeNavGraph(
                 navToDetailPage = {
                     navController.navigate(BottomBarScreen.Profile.route)
                 }
-            ) {
-
-            }
+            ) { }
         }
         composable(route = BottomBarScreen.Map.route) {
             MapScreen(homeViewModel = homeViewModel)
@@ -89,32 +86,5 @@ fun HomeNavGraph(
                 navController.navigateUp()
             }
         }
-        detailsNavGraph(navController = navController)
     }
-}
-
-fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
-    navigation(
-        route = Graph.DETAILS,
-        startDestination = DetailsScreen.Information.route
-    ) {
-        composable(route = DetailsScreen.Information.route) {
-            ScreenContent(name = DetailsScreen.Information.route) {
-                navController.navigate(DetailsScreen.Overview.route)
-            }
-        }
-        composable(route = DetailsScreen.Overview.route) {
-            ScreenContent(name = DetailsScreen.Overview.route) {
-                navController.popBackStack(
-                    route = DetailsScreen.Information.route,
-                    inclusive = false
-                )
-            }
-        }
-    }
-}
-
-sealed class DetailsScreen(val route: String) {
-    object Information : DetailsScreen(route = "INFORMATION")
-    object Overview : DetailsScreen(route = "OVERVIEW")
 }
