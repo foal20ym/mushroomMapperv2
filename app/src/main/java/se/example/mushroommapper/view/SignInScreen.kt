@@ -71,7 +71,7 @@ fun SignInScreen(
                 viewModel.googleSignIn(credentials)
             } catch (e: ApiException) {
                 print(e)
-                errorMessage.value = e.localizedMessage ?: "Unknown error"
+                errorMessage.value = e.localizedMessage ?: "Unknown error with Google sign in"
                 shouldDisplayError.value = true
             }
         }
@@ -205,7 +205,6 @@ fun SignInScreen(
                                 shouldDisplayError.value = true
                             }
                         }
-
                     },
                     modifier = Modifier
                         .fillMaxWidth()

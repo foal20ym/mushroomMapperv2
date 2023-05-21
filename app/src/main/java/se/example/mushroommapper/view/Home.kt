@@ -135,10 +135,10 @@ fun Home(
                             }
                         }
                         else -> {
-                            Text(
-                                text = homeUIState.placesList.throwable?.localizedMessage
-                                    ?: "Unknown Error", color = Color.Red
-                            )
+                            errorMessage.value = homeUIState.placesList.throwable?.localizedMessage ?: "Unknown Error"
+                            ErrorDialog(errorMessage.value) {
+                                shouldDisplayError.value = false
+                            }
                         }
                     }
                 } else {
