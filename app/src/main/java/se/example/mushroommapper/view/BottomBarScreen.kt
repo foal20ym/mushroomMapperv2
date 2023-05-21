@@ -1,4 +1,4 @@
-package se.example.mushroommapper
+package se.example.mushroommapper.view
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import se.example.mushroommapper.BottomBarScreen
+import se.example.mushroommapper.view.BottomBarScreen
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.view.*
 import se.example.mushroommapper.viewModel.HomeViewModel

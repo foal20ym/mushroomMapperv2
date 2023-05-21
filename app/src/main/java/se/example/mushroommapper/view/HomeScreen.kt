@@ -19,8 +19,9 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import se.example.mushroommapper.BottomBarScreen
+import se.example.mushroommapper.view.BottomBarScreen
 import se.example.mushroommapper.detail.DetailViewModel
+import se.example.mushroommapper.detail.DetailsUiState
 import se.example.mushroommapper.navigation.Graph
 import se.example.mushroommapper.navigation.HomeNavGraph
 import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
@@ -37,7 +38,7 @@ fun HomeScreen(
 ) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
-        topBar = { TopBar(navController = navController)},
+        topBar = { TopBar(navController = navController, detailViewModel)},
         modifier = Modifier
     ) { PaddingValues ->
         Column(modifier = Modifier.padding(PaddingValues)){
@@ -48,7 +49,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun TopBar(navController: NavHostController) {
+fun TopBar(navController: NavHostController,detailViewModel: DetailViewModel) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -60,7 +61,10 @@ fun TopBar(navController: NavHostController) {
             }
         },
         navigationIcon = {
-            IconButton(onClick = {navController.navigate(Graph.HOME)}) {
+            IconButton(onClick = {
+                navController.navigate(Graph.HOME)
+                detailViewModel.resetState()
+            }) {
                 Icon(Icons.Filled.ArrowBack, "backIcon")
             }
         },
