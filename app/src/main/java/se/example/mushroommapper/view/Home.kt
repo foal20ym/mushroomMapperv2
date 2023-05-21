@@ -30,7 +30,6 @@ import se.example.mushroommapper.model.Places
 import se.example.mushroommapper.ui.theme.BACKGROUND_COLOR
 import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
 import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
-import se.example.mushroommapper.view.Utils
 import se.example.mushroommapper.viewModel.HomeUIState
 import se.example.mushroommapper.viewModel.HomeViewModel
 import se.example.mushroommapper.viewModel.color
@@ -284,7 +283,7 @@ fun NoteItem(
             )
             .padding(8.dp)
             .fillMaxWidth(),
-        backgroundColor = Utils.colors[notes.colorIndex]
+        //backgroundColor = Utils.colors[notes.colorIndex]
     ){
         Column {
             Text(

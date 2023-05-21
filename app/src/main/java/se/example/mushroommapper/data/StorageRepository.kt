@@ -106,7 +106,7 @@ class StorageRepository {
         onError: (Throwable?) -> Unit,
         onSuccess: (Places?) -> Unit
     ){
-        notesRef
+        placeRef
             .document(placeId)
             .get()
             .addOnSuccessListener {

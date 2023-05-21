@@ -24,6 +24,7 @@ class DetailViewModel(
     fun onColorChange(colorIndex: Int){
         detailsUiState = detailsUiState.copy(colorIndex = colorIndex)
     }
+
     fun onTitleChange(title:String) {
         detailsUiState = detailsUiState.copy(title = title)
     }

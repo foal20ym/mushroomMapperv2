@@ -48,7 +48,7 @@ fun HomeNavGraph(
             }
         }
         // 1:28:32
-        /*composable(
+        composable(
             route = BottomBarScreen.Profile.route + "?id={id}",
             arguments = listOf(navArgument("id"){
                 type = NavType.StringType
@@ -61,7 +61,7 @@ fun HomeNavGraph(
             ) {
                 navController.navigateUp()
             }
-        }*/
+        }
         composable(route = BottomBarScreen.Profile.route){
             ProfileScreen(
                 homeViewModel = homeViewModel,
