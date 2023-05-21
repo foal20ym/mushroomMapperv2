@@ -59,10 +59,8 @@ fun ManuallyAddLocationScreen(
                     return@Button
                 }
 
-                //////
                 val latitude = latitudeInput?.toDoubleOrNull()
                 val longitude = longitudeInput?.toDoubleOrNull()
-
 
                 if (latitudeInput.isNullOrEmpty()) {
                     errorMessage.value = "Latitude is required"
@@ -126,7 +124,8 @@ fun ManuallyAddLocationScreen(
                 }
             }
 
-            TextField(value = detailsUiState.title,
+            TextField(
+                value = detailsUiState.title,
                 onValueChange = {
                     detailViewModel?.onTitleChange(it)
                 },

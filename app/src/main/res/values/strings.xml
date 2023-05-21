@@ -36,4 +36,6 @@
     <string name="NoLatestActivity" >You have no activities to display.</string>
     <string name="ToUploadAnEventUseCamera" >To upload an event use the Camera or REPLACE in the header menu</string>
     <string name="TakePhoto" >Take photo</string>
+    <string name="UpdatePlace" >Update Place</string>
+
 </resources>

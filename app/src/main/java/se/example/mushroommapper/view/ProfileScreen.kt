@@ -22,7 +22,6 @@ import se.example.mushroommapper.R
 import se.example.mushroommapper.data.Resources
 import se.example.mushroommapper.model.Notes
 import se.example.mushroommapper.model.Places
-import se.example.mushroommapper.view.Utils
 import se.example.mushroommapper.viewModel.HomeUIState
 import se.example.mushroommapper.viewModel.HomeViewModel
 import java.text.SimpleDateFormat
@@ -31,34 +30,25 @@ import java.util.*
 @Composable
 fun ProfileScreen(
     homeViewModel: HomeViewModel?,
-    onPlaceClick:(id:String) -> Unit,
-    navToDetailPage:() -> Unit,
-    navToLoginPage:() -> Unit,
-){
+    onPlaceClick: (id: String) -> Unit,
+    navToDetailPage: () -> Unit,
+    navToLoginPage: () -> Unit,
+) {
     val homeUIState = homeViewModel?.homeUIState ?: HomeUIState()
-
     var openDialog by remember {
         mutableStateOf(false)
     }
-
     var selectedPlace: Places? by remember {
         mutableStateOf(null)
     }
-
-    val scope = rememberCoroutineScope()
-
-    val scaffoldState = rememberScaffoldState()
-
-    LaunchedEffect(key1 = Unit){
+    LaunchedEffect(key1 = Unit) {
         homeViewModel?.loadPlaces()
     }
 
 
-    Scaffold(
-
-    ) { padding ->
+    Scaffold() { padding ->
         Column(modifier = Modifier.padding(padding)) {
-            when(homeUIState.placesList){
+            when (homeUIState.placesList) {
                 is Resources.Loading -> {
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -70,11 +60,12 @@ fun ProfileScreen(
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(16.dp),
-                    ){
+                    ) {
                         items(
                             homeUIState.placesList.data ?: emptyList()
                         ) { place ->
-                            PlaceItem(places = place,
+                            PlaceItem(
+                                places = place,
                                 onLongClick = {
                                     openDialog = true
                                     selectedPlace = place
@@ -83,13 +74,12 @@ fun ProfileScreen(
                                 onPlaceClick.invoke(place.documentId)
                             }
                         }
-
                     }
                     AnimatedVisibility(visible = openDialog) {
                         AlertDialog(onDismissRequest = {
                             openDialog = false
                         },
-                            title = { Text(text = stringResource(id = R.string.DeletePlace))},
+                            title = { Text(text = stringResource(id = R.string.DeletePlace)) },
                             confirmButton = {
                                 Button(
                                     onClick = {
@@ -109,46 +99,40 @@ fun ProfileScreen(
                                 Button(onClick = { openDialog = false }) {
                                     Text(text = stringResource(id = R.string.Cancel))
                                 }
-                            }
-                        )
+                            })
                     }
                 }
                 else -> {
                     Text(
-                        text = homeUIState
-                            .placesList.throwable?.localizedMessage ?: stringResource(id = R.string.UnknownError),
-                        color = Color.Red
+                        text = homeUIState.placesList.throwable?.localizedMessage ?: stringResource(
+                            id = R.string.UnknownError
+                        ), color = Color.Red
                     )
                 }
-
-            } // when
-        } // column
-
+            }
+        }
     }
-    LaunchedEffect(key1 = homeViewModel?.hasUser){
-        if(homeViewModel?.hasUser == false){
+    LaunchedEffect(key1 = homeViewModel?.hasUser) {
+        if (homeViewModel?.hasUser == false) {
             navToLoginPage.invoke()
         }
     }
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlaceItem(
     places: Places,
-    onLongClick:() -> Unit,
-    onClick:() -> Unit,
-){
+    onLongClick: () -> Unit,
+    onClick: () -> Unit,
+) {
     Card(
         modifier = Modifier
-            .combinedClickable(
-                onLongClick = { onLongClick.invoke() },
-                onClick = { onClick.invoke() }
-            )
+            .combinedClickable(onLongClick = { onLongClick.invoke() },
+                onClick = { onClick.invoke() })
             .padding(8.dp)
             .fillMaxWidth(),
-    ){
+    ) {
         Column {
             Text(
                 text = places.title,
@@ -171,8 +155,7 @@ fun PlaceItem(
                 )
                 Text(
                     text = (com.google.android.gms.maps.model.LatLng(
-                        places.latitude,
-                        places.longitude
+                        places.latitude, places.longitude
                     )).toString(),
                     style = MaterialTheme.typography.body1,
                     overflow = TextOverflow.Ellipsis,
@@ -195,71 +178,9 @@ fun PlaceItem(
                 )
             }
         }
-
-
-    }
-
-
-}
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun NoteItem(
-    notes: Notes,
-    onLongClick:() -> Unit,
-    onClick:() -> Unit,
-){
-    Card(
-        modifier = Modifier
-            .combinedClickable(
-                onLongClick = { onLongClick.invoke() },
-                onClick = { onClick.invoke() }
-            )
-            .padding(8.dp)
-            .fillMaxWidth(),
-        backgroundColor = Utils.colors[notes.colorIndex]
-    ){
-        Column {
-            Text(
-                text = notes.title,
-                style = MaterialTheme.typography.h6,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Clip,
-                modifier = Modifier.padding(4.dp)
-            )
-            Spacer(modifier = Modifier.size(4.dp))
-            CompositionLocalProvider(
-                LocalContentAlpha provides ContentAlpha.disabled
-            ) {
-                Text(
-                    text = notes.description,
-                    style = MaterialTheme.typography.body1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(4.dp),
-                    maxLines = 4
-                )
-            }
-            Spacer(modifier = Modifier.size(4.dp))
-            CompositionLocalProvider(
-                LocalContentAlpha provides ContentAlpha.disabled
-            ) {
-                Text(
-                    text = formatDate(notes.timestamp),
-                    style = MaterialTheme.typography.body1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .align(Alignment.End),
-                    maxLines = 4
-                )
-            }
-        }
-
-
     }
 }
+
 
 private fun formatDate(timestamp: Timestamp): String {
     val sdf = SimpleDateFormat("MM-dd-yy hh:mm", Locale.getDefault())
