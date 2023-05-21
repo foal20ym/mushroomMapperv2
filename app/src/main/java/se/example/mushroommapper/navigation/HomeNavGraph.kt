@@ -34,9 +34,6 @@ fun HomeNavGraph(
                     ){
                         launchSingleTop = true
                     }
-                },
-                navToDetailPage = {
-                    navController.navigate(BottomBarScreen.Profile.route)
                 }
             ) {
                 navController.navigate(Graph.AUTHENTICATION){
@@ -47,7 +44,6 @@ fun HomeNavGraph(
                 }
             }
         }
-        // 1:28:32
         composable(
             route = BottomBarScreen.Profile.route + "?id={id}",
             arguments = listOf(navArgument("id"){

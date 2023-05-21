@@ -1,4 +1,3 @@
-
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -30,6 +29,7 @@ import se.example.mushroommapper.model.Places
 import se.example.mushroommapper.ui.theme.BACKGROUND_COLOR
 import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR
 import se.example.mushroommapper.ui.theme.NON_INTERACTABLE_COLOR
+import se.example.mushroommapper.view.ErrorDialog
 import se.example.mushroommapper.viewModel.HomeUIState
 import se.example.mushroommapper.viewModel.HomeViewModel
 import se.example.mushroommapper.viewModel.color
@@ -39,34 +39,20 @@ import java.util.*
 @Composable
 fun Home(
     homeViewModel: HomeViewModel?,
-    onPlaceClick:(id:String) -> Unit,
-    navToDetailPage:() -> Unit,
-    navToLoginPage:() -> Unit,
-){
+    onPlaceClick: (id: String) -> Unit,
+    navToLoginPage: () -> Unit,
+) {
     val homeUIState = homeViewModel?.homeUIState ?: HomeUIState()
-
     val latestActivity = homeViewModel?.homeUIState?.placesList?.data
-
-    var openDialog by remember {
-        mutableStateOf(false)
-    }
-
-    var selectedPlace: Places? by remember {
-        mutableStateOf(null)
-    }
-
-    val scope = rememberCoroutineScope()
-
-    val scaffoldState = rememberScaffoldState()
-
-    LaunchedEffect(key1 = Unit){
+    var openDialog by remember { mutableStateOf(false) }
+    var selectedPlace: Places? by remember { mutableStateOf(null) }
+    val shouldDisplayError = remember { mutableStateOf(false) }
+    val errorMessage = remember { mutableStateOf("") }
+    LaunchedEffect(key1 = Unit) {
         homeViewModel?.loadPlaces()
     }
 
-
-    Scaffold(
-
-    ) { padding ->
+    Scaffold { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -74,10 +60,9 @@ fun Home(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(){
+            Row() {
                 Icon(
-                    Icons.Default.Star,
-                    contentDescription = "Person Icon"
+                    Icons.Default.Star, contentDescription = "Person Icon"
                 )
             }
             Column(
@@ -88,8 +73,7 @@ fun Home(
             ) {
 
                 Text(
-                    text = stringResource(id = R.string.LatestActivity),
-                    style = TextStyle(
+                    text = stringResource(id = R.string.LatestActivity), style = TextStyle(
                         color = NON_INTERACTABLE_COLOR.color,
                         fontSize = 35.sp,
                         fontWeight = FontWeight.Bold
@@ -97,7 +81,7 @@ fun Home(
                 )
 
                 if (latestActivity?.isNotEmpty() == true) {
-                    when(homeUIState.placesList){
+                    when (homeUIState.placesList) {
                         is Resources.Loading -> {
                             CircularProgressIndicator(
                                 modifier = Modifier
@@ -109,11 +93,12 @@ fun Home(
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(1),
                                 contentPadding = PaddingValues(16.dp),
-                            ){
+                            ) {
                                 items(
                                     homeUIState.placesList.data ?: emptyList()
                                 ) { place ->
-                                    PlaceItem(places = place,
+                                    PlaceItem(
+                                        places = place,
                                         onLongClick = {
                                             openDialog = true
                                             selectedPlace = place
@@ -122,52 +107,47 @@ fun Home(
                                         onPlaceClick.invoke(place.documentId)
                                     }
                                 }
-
                             }
                             AnimatedVisibility(visible = openDialog) {
                                 AlertDialog(onDismissRequest = {
                                     openDialog = false
-                                },
-                                    title = { Text(text = "Delete Place?")},
-                                    confirmButton = {
-                                        Button(
-                                            onClick = {
+                                }, title = { Text(text = stringResource(id = R.string.DeletePlace)) }, confirmButton = {
+                                    Button(
+                                        onClick = {
+                                            try {
                                                 selectedPlace?.documentId?.let {
                                                     homeViewModel?.deletePlace(it)
                                                 }
                                                 openDialog = false
-                                            },
-                                            colors = ButtonDefaults.buttonColors(
-                                                backgroundColor = Color.Red
-                                            ),
-                                        ) {
-                                            Text(text = "Delete")
-                                        }
-                                    },
-                                    dismissButton = {
-                                        Button(onClick = { openDialog = false }) {
-                                            Text(text = "Cancel")
-                                        }
+                                            } catch (e: Exception) {
+                                                println(e)
+                                                errorMessage.value = "Delete operation failed"
+                                                shouldDisplayError.value = true
+                                            }
+                                        },
+                                        colors = ButtonDefaults.buttonColors(
+                                            backgroundColor = Color.Red
+                                        ),
+                                    ) {
+                                        Text(text = stringResource(id = R.string.Delete))
                                     }
-                                )
-
-
-
+                                }, dismissButton = {
+                                    Button(onClick = { openDialog = false }) {
+                                        Text(text = stringResource(id = R.string.Cancel))
+                                    }
+                                })
                             }
                         }
                         else -> {
                             Text(
-                                text = homeUIState
-                                    .placesList.throwable?.localizedMessage ?: "Unknown Error",
-                                color = Color.Red
+                                text = homeUIState.placesList.throwable?.localizedMessage
+                                    ?: "Unknown Error", color = Color.Red
                             )
                         }
-
                     }
                 } else {
                     Text(
-                        modifier = Modifier
-                            .padding(top = 100.dp),
+                        modifier = Modifier.padding(top = 100.dp),
                         text = stringResource(id = R.string.NoLatestActivity),
                         style = TextStyle(
                             fontSize = 25.sp,
@@ -176,25 +156,26 @@ fun Home(
                         )
                     )
                     Text(
-                        modifier = Modifier
-                            .padding(top = 25.dp, bottom = 150.dp),
+                        modifier = Modifier.padding(top = 25.dp, bottom = 150.dp),
                         text = stringResource(id = R.string.ToUploadAnEventUseCamera),
                         style = TextStyle(
-                            fontSize = 15.sp,
-                            color = NON_INTERACTABLE_COLOR.color
+                            fontSize = 15.sp, color = NON_INTERACTABLE_COLOR.color
                         )
                     )
                 }
+                if (shouldDisplayError.value) {
+                    ErrorDialog(errorMessage.value) {
+                        shouldDisplayError.value = false
+                    }
+                }
             }
         }
-
     }
-    LaunchedEffect(key1 = homeViewModel?.hasUser){
-        if(homeViewModel?.hasUser == false){
+    LaunchedEffect(key1 = homeViewModel?.hasUser) {
+        if (homeViewModel?.hasUser == false) {
             navToLoginPage.invoke()
         }
     }
-
 }
 
 
@@ -202,18 +183,16 @@ fun Home(
 @Composable
 fun PlaceItem(
     places: Places,
-    onLongClick:() -> Unit,
-    onClick:() -> Unit,
-){
+    onLongClick: () -> Unit,
+    onClick: () -> Unit,
+) {
     Card(
         modifier = Modifier
-            .combinedClickable(
-                onLongClick = { onLongClick.invoke() },
-                onClick = { onClick.invoke() }
-            )
+            .combinedClickable(onLongClick = { onLongClick.invoke() },
+                onClick = { onClick.invoke() })
             .padding(8.dp)
             .fillMaxWidth(),
-    ){
+    ) {
         Column {
             Text(
                 text = places.title,
@@ -236,8 +215,7 @@ fun PlaceItem(
                 )
                 Text(
                     text = (com.google.android.gms.maps.model.LatLng(
-                        places.latitude,
-                        places.longitude
+                        places.latitude, places.longitude
                     )).toString(),
                     style = MaterialTheme.typography.body1,
                     overflow = TextOverflow.Ellipsis,
@@ -260,71 +238,9 @@ fun PlaceItem(
                 )
             }
         }
-
-
-    }
-
-
-}
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun NoteItem(
-    notes: Notes,
-    onLongClick:() -> Unit,
-    onClick:() -> Unit,
-){
-    Card(
-        modifier = Modifier
-            .combinedClickable(
-                onLongClick = { onLongClick.invoke() },
-                onClick = { onClick.invoke() }
-            )
-            .padding(8.dp)
-            .fillMaxWidth(),
-        //backgroundColor = Utils.colors[notes.colorIndex]
-    ){
-        Column {
-            Text(
-                text = notes.title,
-                style = MaterialTheme.typography.h6,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Clip,
-                modifier = Modifier.padding(4.dp)
-            )
-            Spacer(modifier = Modifier.size(4.dp))
-            CompositionLocalProvider(
-                LocalContentAlpha provides ContentAlpha.disabled
-            ) {
-                Text(
-                    text = notes.description,
-                    style = MaterialTheme.typography.body1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(4.dp),
-                    maxLines = 4
-                )
-            }
-            Spacer(modifier = Modifier.size(4.dp))
-            CompositionLocalProvider(
-                LocalContentAlpha provides ContentAlpha.disabled
-            ) {
-                Text(
-                    text = formatDate(notes.timestamp),
-                    style = MaterialTheme.typography.body1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .align(Alignment.End),
-                    maxLines = 4
-                )
-            }
-        }
-
-
     }
 }
+
 
 private fun formatDate(timestamp: Timestamp): String {
     val sdf = SimpleDateFormat("MM-dd-yy hh:mm", Locale.getDefault())
