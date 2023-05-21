@@ -36,7 +36,4 @@ object Graph {
     const val DETAILS = "details_graph"
     const val CAMERA  = "Camera_Screen"
     const val PHOTO = "Image_Screen"
-    const val MAP = "map_graph"
-    const val SIGN_UP = "SignUp_Screen"
-    const val LOGIN = "SignIn_Screen"
 }

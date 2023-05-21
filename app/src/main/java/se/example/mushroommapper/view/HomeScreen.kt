@@ -19,9 +19,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import se.example.mushroommapper.view.BottomBarScreen
 import se.example.mushroommapper.detail.DetailViewModel
-import se.example.mushroommapper.detail.DetailsUiState
 import se.example.mushroommapper.navigation.Graph
 import se.example.mushroommapper.navigation.HomeNavGraph
 import se.example.mushroommapper.ui.theme.INTERACTABLE_COLOR

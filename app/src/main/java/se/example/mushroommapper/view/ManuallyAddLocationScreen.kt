@@ -17,10 +17,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
-import se.example.mushroommapper.viewModel.LocationViewModel
 import se.example.mushroommapper.R
 import se.example.mushroommapper.detail.DetailViewModel
 import se.example.mushroommapper.detail.DetailsUiState
+import se.example.mushroommapper.viewModel.LocationViewModel
 
 @Composable
 fun ManuallyAddLocationScreen(
